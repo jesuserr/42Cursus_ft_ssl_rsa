@@ -6,11 +6,13 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 22:21:30 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/02/12 20:49:24 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/02/19 12:03:02 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/ft_ssl.h"
+
+static void	print_total_usage_continued(void);
 
 // Prints given array of bytes in hexadecimal format. Depending on the 'start'
 // and 'end' values, it prints the array in ascending or descending order to
@@ -74,5 +76,30 @@ void	print_total_usage(void)
 		"  -p          password in ASCII\n"
 		"  -s <salt>   salt in hexadecimal\n"
 		"  -v          initialization vector in hexadecimal\n\n");
+	print_total_usage_continued();
+}
+
+static void	print_total_usage_continued(void)
+{
+	ft_printf(
+		"RSA options:\n  command         genrsa, rsa, rsautl\n"
+		"  -h              print help and exit\n"
+		"  -inform PEM     input format is PEM (default)\n"
+		"  -outform PEM    output format is PEM (default)\n"
+		"  -in <file>      input file\n"
+		"  -passin arg     input file password source\n"
+		"  -out <file>     output file\n"
+		"  -passout arg    output file password source\n"
+		"  -des            encrypt the output with DES in CBC mode\n"
+		"  -text           print the key in plain text\n"
+		"  -noout          do not output encoded version of key\n"
+		"  -modulus        print value of key modulus\n"
+		"  -check          verify key consistency\n"
+		"  -pubin          read public key from input file\n"
+		"  -pubout         print public key\n"
+		"  -inkey <file>   input key (RSA private key by default)\n"
+		"  -encrypt        encrypt input data with public key\n"
+		"  -decrypt        decrypt input data with private key\n"
+		"  -hexdump        print the key in hexadecimal\n");
 	exit(EXIT_SUCCESS);
 }

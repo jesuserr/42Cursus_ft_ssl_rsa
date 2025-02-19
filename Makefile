@@ -6,7 +6,7 @@
 #    By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/19 17:09:51 by jesuserr          #+#    #+#              #
-#    Updated: 2025/02/12 23:53:46 by jesuserr         ###   ########.fr        #
+#    Updated: 2025/02/19 23:23:47 by jesuserr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,8 @@ SRCS = 	main.c \
 		encrypt/encrypt_password.c encrypt/des_cbc.c encrypt/encrypt_pbkdf2.c \
 		encrypt/encrypt_str_utils.c encrypt/encrypt_encode_utils.c \
 		encrypt/encrypt_block_cipher.c encrypt/encrypt_sha256.c \
-		encrypt/des_cfb.c encrypt/des_ofb.c
+		encrypt/des_cfb.c encrypt/des_ofb.c \
+		rsa/rsa_utils.c rsa/rsa_genrsa.c
 PATH_SRCS = ./srcs/
 PATH_INCS = ./srcs/incs/
 PATH_OBJS = ./objs/
@@ -54,6 +55,7 @@ $(PATH_OBJS)%.o: $(PATH_SRCS)%.c Makefile
 	@mkdir -p $(PATH_OBJS)/encode
 	@mkdir -p $(PATH_OBJS)/encrypt
 	@mkdir -p $(PATH_OBJS)/utils
+	@mkdir -p $(PATH_OBJS)/rsa
 	$(CC) $(CFLAGS) -MMD $(INCLUDE) -c $< -o $@
 
 $(NAME): $(OBJS) $(LIBFT_DIR)libft.a

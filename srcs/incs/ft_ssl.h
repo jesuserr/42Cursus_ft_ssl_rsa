@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 17:11:34 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/02/12 20:47:31 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/02/19 23:24:08 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include "types_hash.h"						// for t_hash_args
 # include "types_encode.h"						// for t_encode_args
 # include "types_encrypt.h"						// for t_encrypt_args
+# include "types_rsa.h"							// for t_rsa_args
 # include "md5.h"								// for MD5 hash function
 # include "sha256.h"							// for SHA256 hash function
 # include "sha224.h"							// for SHA224 hash function
@@ -35,6 +36,7 @@
 # include "des_cbc.h"						    // for des-cbc encrypt function
 # include "des_cfb.h"						    // for des-cfb encrypt function
 # include "des_ofb.h"						    // for des-cob encrypt function
+# include "genrsa.h"						    // for genrsa function
 # include <string.h>							// for strerror
 # include <fcntl.h>								// for open
 # include <errno.h>								// for errno
@@ -50,6 +52,7 @@
 # define HASH_COMMAND       1           // Pre-parser detected a hash command
 # define ENCODE_COMMAND     2           // Pre-parser detected an encode command
 # define ENCRYPT_COMMAND    3           // Pre-parser detected encrypt command
+# define RSA_COMMAND		4           // Pre-parser detected an RSA command
 
 /*
 ** -.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-
@@ -128,5 +131,14 @@ void		print_message_from_pipe(t_hash_args *args);
 void		print_hex_bytes(uint8_t *byte, uint8_t start, uint8_t end);
 void		print_error_and_exit(char *str);
 void		print_total_usage(void);
+
+/********************************** rsa_genrsa.c ******************************/
+void		parse_genrsa_arguments(int argc, char **argv, t_rsa_args *args);
+
+/********************************** rsa_utils.c *******************************/
+void		calls_to_rsa_function(t_rsa_args *args);
+void		print_rsa_usage(void);
+void		print_rsa_strerror_and_exit(char *msg, t_rsa_args *args);
+void		choose_rsa_parsing(int argc, char **argv, t_rsa_args *args);
 
 #endif
