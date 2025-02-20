@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 19:20:59 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/02/19 23:20:18 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/02/20 11:01:30 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,9 @@
 ** -.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-
 **                              STRUCTS
 */
-typedef struct s_rsa_args				// temporary struct for RSA commands
+typedef struct s_rsa_args
 {
+	char		*output_file_name;
 	int			output_fd;
 	bool		output_to_file;
 	uint8_t		rsa_function;

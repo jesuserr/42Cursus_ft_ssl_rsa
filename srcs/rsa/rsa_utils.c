@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 11:59:02 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/02/19 23:11:14 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/02/20 10:28:53 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,10 +98,12 @@ void	print_rsa_strerror_and_exit(char *msg, t_rsa_args *args)
 
 void	choose_rsa_parsing(int argc, char **argv, t_rsa_args *args)
 {
+	(void)argc;
+	
 	if (!ft_strncmp(argv[1], "genrsa", 6) && ft_strlen(argv[1]) == 6)
 	{
 		args->rsa_function = GENRSA;
-		parse_genrsa_arguments(argc, argv, args);
+		parse_genrsa_arguments(argv, args);
 	}
 	else if (!ft_strncmp(argv[1], "rsa", 3) && ft_strlen(argv[1]) == 3)
 		args->rsa_function = RSA;

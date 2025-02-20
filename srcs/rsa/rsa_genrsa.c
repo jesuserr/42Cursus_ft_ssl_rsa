@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   genrsa.c                                           :+:      :+:    :+:   */
+/*   rsa_genrsa.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 12:15:02 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/02/19 23:09:05 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/02/20 10:32:10 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,29 +59,32 @@ void	genrsa(t_rsa_args *args)
 // Parser for genrsa command. Pretty simple since only needs to check for
 // output file and help flag. If everything is correct, it calls the genrsa
 // function.
-void	parse_genrsa_arguments(int argc, char **argv, t_rsa_args *args)
+void	parse_genrsa_arguments(char **argv, t_rsa_args *args)
 {
-	int		opt;
+	int	i;
 
 	args->output_fd = STDOUT_FILENO;
-	opt = getopt(argc, argv, "ho:");
-	while (opt != -1)
+	i = 2;
+	while (argv[i])
 	{
-		if (opt == 'h')
+		if (!ft_strncmp(argv[i], "-h", 2) && ft_strlen(argv[i]) == 2)
 			print_rsa_usage();
-		else if (opt == 'o' && !args->output_to_file)
+		else if (!ft_strncmp(argv[i], "-out", 4) && ft_strlen(argv[i]) == 4 && \
+		argv[i + 1] && argv[i + 1][0] != '-' && !args->output_to_file)
 		{
 			args->output_to_file = true;
-			args->output_fd = open(optarg, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-			if (args->output_fd == -1)
-				print_rsa_strerror_and_exit(optarg, args);
+			args->output_file_name = argv[i + 1];
+			i++;
 		}
-		opt = getopt(argc, argv, "ho:");
+		else
+			print_error_and_exit("Not recognized option");
+		i++;
 	}
-	if (++optind < argc)
+	if (args->output_to_file)
 	{
-		errno = EINVAL;
-		print_rsa_strerror_and_exit("Not recognized option", args);
+		args->output_fd = open(args->output_file_name, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		if (args->output_fd == -1)
+			print_rsa_strerror_and_exit(args->output_file_name, args);
 	}
 	genrsa(args);
 }

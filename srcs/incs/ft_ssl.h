@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 17:11:34 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/02/19 23:24:08 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/02/20 10:28:37 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ void		print_error_and_exit(char *str);
 void		print_total_usage(void);
 
 /********************************** rsa_genrsa.c ******************************/
-void		parse_genrsa_arguments(int argc, char **argv, t_rsa_args *args);
+void		parse_genrsa_arguments(char **argv, t_rsa_args *args);
 
 /********************************** rsa_utils.c *******************************/
 void		calls_to_rsa_function(t_rsa_args *args);
