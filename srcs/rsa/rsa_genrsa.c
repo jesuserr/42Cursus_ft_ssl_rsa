@@ -6,11 +6,32 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 12:15:02 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/02/21 20:32:16 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/02/21 22:38:03 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/ft_ssl.h"
+
+// https://en.wikipedia.org/wiki/Modular_arithmetic
+// Designed to compute the product of two large numbers modulo a third number
+// without causing overflow (a * b mod n). Particularly important when working
+// with uint64_t numbers, as the product of two uint64_t numbers can exceed the
+// range of uint64_t.
+uint64_t	modular_multiplication(uint64_t a, uint64_t b, uint64_t mod)
+{
+	uint64_t	result;
+
+	result = 0;
+	a = a % mod;
+	while (b > 0)
+	{
+		if (b % 2 == 1)
+			result = (result + a) % mod;
+		a = (a * 2) % mod;
+		b = b / 2;
+	}
+	return (result);
+}
 
 // https://en.wikipedia.org/wiki/Modular_exponentiation
 // (Right-to-left binary method) Used to avoid overflow when calculating
@@ -18,10 +39,7 @@
 // potentially huge intermediate values of (a^d).
 // 'mod' ('n') never will be 1 since it is filtered out before calling Miller-
 // Rabin test. Checked anyways as extra security.
-// 'base' ('a') starts with a value of 2 and is incremented in each iteration.
-// Therefore will never reach a high value and therefore there is no need to
-// protect the multiplications where 'base' is used from overflow.
-uint64_t	modular_exponentiation(uint64_t base, uint64_t exp, uint32_t mod)
+uint64_t	modular_exponentiation(uint64_t base, uint64_t exp, uint64_t mod)
 {
 	uint64_t	result;
 
@@ -32,27 +50,27 @@ uint64_t	modular_exponentiation(uint64_t base, uint64_t exp, uint32_t mod)
 	while (exp > 0)
 	{
 		if (exp % 2 == 1)
-			result = (result * base) % mod;
+			result = modular_multiplication(result, base, mod);
 		exp = exp >> 1;
-		base = (base * base) % mod;
+		base = modular_multiplication(base, base, mod);
 	}
 	return (result);
 }
 
 // https://en.wikipedia.org/wiki/Miller-Rabin_primality_test#Miller-Rabin_test
 // Input #1: n > 2, an odd integer to be tested for primality
-// Input #2: k, the number of rounds of testing to perform (accuracy)
+// Input #2: k, the number of rounds of testing to perform (accuracy) MAX: 255
 // Output: "false" if n is found to be composite, otherwise probably prime.
 // No need to initialize 'd' since 'n' will be odd and while loop will be run at
 // least once. 'a' is initialized to 2 and incremented in each iteration.
 // Explore another ways to increase 'a'.
-bool	miller_rabin_test(uint32_t n, uint32_t k)
+bool	miller_rabin_test(uint64_t n, uint8_t k)
 {
 	t_miller_rabin_args	args;
 
 	args.s = 1;
-	while (((n - 1) % (1U << args.s)) == 0)
-		args.d = (n - 1) / (1U << args.s++);
+	while (((n - 1) % ((uint64_t)1 << args.s)) == 0)
+		args.d = (n - 1) / ((uint64_t)1 << args.s++);
 	args.s--;
 	args.a = 2;
 	while (k--)
@@ -60,7 +78,7 @@ bool	miller_rabin_test(uint32_t n, uint32_t k)
 		args.x = modular_exponentiation(args.a, args.d, n);
 		while (args.s > 0)
 		{
-			args.y = (args.x * args.x) % n;
+			args.y = modular_multiplication(args.x, args.x, n);
 			if (args.y == 1 && args.x != 1 && args.x != n - 1)
 				return (false);
 			args.x = args.y;
