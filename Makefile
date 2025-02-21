@@ -6,7 +6,7 @@
 #    By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/19 17:09:51 by jesuserr          #+#    #+#              #
-#    Updated: 2025/02/19 23:23:47 by jesuserr         ###   ########.fr        #
+#    Updated: 2025/02/21 22:52:12 by jesuserr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ SRCS = 	main.c \
 		encrypt/encrypt_str_utils.c encrypt/encrypt_encode_utils.c \
 		encrypt/encrypt_block_cipher.c encrypt/encrypt_sha256.c \
 		encrypt/des_cfb.c encrypt/des_ofb.c \
-		rsa/rsa_utils.c rsa/rsa_genrsa.c
+		rsa/rsa_utils.c rsa/rsa_genrsa.c rsa/rsa_genrsa_utils.c
 PATH_SRCS = ./srcs/
 PATH_INCS = ./srcs/incs/
 PATH_OBJS = ./objs/
