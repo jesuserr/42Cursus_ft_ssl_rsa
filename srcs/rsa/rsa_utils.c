@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 11:59:02 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/02/21 21:07:32 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/02/22 18:35:40 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,8 @@ void	print_rsa_usage(void)
 		"  -inkey <file>   input key (RSA private key by default)\n"
 		"  -encrypt        encrypt input data with public key\n"
 		"  -decrypt        decrypt input data with private key\n"
-		"  -hexdump        print the key in hexadecimal\n");
+		"  -hexdump        print the key in hexadecimal\n"
+		"  -verbose        print details during key generation\n");
 	exit(EXIT_SUCCESS);
 }
 

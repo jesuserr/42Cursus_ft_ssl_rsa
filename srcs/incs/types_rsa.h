@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 19:20:59 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/02/22 17:34:04 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/02/22 18:58:12 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 # define RSA_KEY_LENGTH			8U			// Key length in bytes (64 bits)
 # define MR_ITERATIONS			30U			// Iterations for Miller-Rabin test
 # define PRIV_KEY_LENGTH		87U			// Private key length in bytes
+# define FIRST_RND_NBR			1U			// First random number generated
+# define SECOND_RND_NBR			2U			// Second random number generated
 
 /*
 ** -.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-
@@ -44,6 +46,7 @@ typedef struct s_rsa_args
 	char		private_key[PRIV_KEY_LENGTH];
 	int			output_fd;
 	bool		output_to_file;
+	bool		verbose;
 	uint8_t		rsa_function;
 	t_rsa_key	key;
 }	t_rsa_args;

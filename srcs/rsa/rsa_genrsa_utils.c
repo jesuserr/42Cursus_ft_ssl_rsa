@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 22:46:06 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/02/22 15:47:21 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/02/22 18:50:41 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,9 @@ void	parse_genrsa_arguments(char **argv, t_rsa_args *args)
 			args->output_file_name = argv[i + 1];
 			i++;
 		}
+		else if (!ft_strncmp(argv[i], "-verbose", 8) && ft_strlen(argv[i]) == 8 \
+		&& !args->verbose)
+			args->verbose = true;
 		else
 			print_error_and_exit("Not recognized option");
 		i++;

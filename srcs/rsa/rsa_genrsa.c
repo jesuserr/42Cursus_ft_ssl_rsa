@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 12:15:02 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/02/22 17:38:51 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/02/22 18:59:46 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 // Output: "false" if n is found to be composite, otherwise probably prime.
 // No need to initialize 'd' since 'n' will be odd and while loop will be run at
 // least once. 'a' is initialized to 2 and incremented in each iteration.
-static bool	miller_rabin_test(uint64_t n, uint8_t k)
+static bool	miller_rabin_test(uint64_t n, uint8_t k, bool verbose)
 {
 	t_miller_rabin_args	args;
 
@@ -42,16 +42,18 @@ static bool	miller_rabin_test(uint64_t n, uint8_t k)
 			return (false);
 		args.a++;
 	}
+	if (verbose)
+		ft_printf("+");
 	return (true);
 }
 
 // Generate a random 32-bit number reading from /dev/urandom. When cryptographic
 // security is needed, reading from /dev/urandom is the most secure way to
 // generate random numbers.
-// A quick check is done to avoid even numbers and numbers divisible by small
+// A quick check is done to reject even numbers and numbers divisible by small
 // primes (3, 5, 7 and 11) to eliminate composite numbers without needing the
 // full Miller-Rabin test.
-static uint32_t	generate_random_number(t_rsa_args *args)
+static uint32_t	generate_random_number(t_rsa_args *args, uint8_t number)
 {
 	int			fd;
 	uint32_t	random_number;
@@ -71,6 +73,10 @@ static uint32_t	generate_random_number(t_rsa_args *args)
 			break ;
 	}
 	close(fd);
+	if (number == FIRST_RND_NBR && args->verbose)
+		ft_printf(".");
+	else if (number == SECOND_RND_NBR && args->verbose)
+		ft_printf(",");
 	return (random_number);
 }
 
@@ -84,23 +90,23 @@ static void	key_calculation(t_rsa_args *args)
 {
 	while (1)
 	{
-		args->key.p = generate_random_number(args);
-		if (!miller_rabin_test(args->key.p, MR_ITERATIONS))
+		args->key.p = generate_random_number(args, FIRST_RND_NBR);
+		if (!miller_rabin_test(args->key.p, MR_ITERATIONS, args->verbose))
 			continue ;
-		args->key.q = generate_random_number(args);
-		while (!miller_rabin_test(args->key.q, MR_ITERATIONS))
-			args->key.q = generate_random_number(args);
+		args->key.q = generate_random_number(args, SECOND_RND_NBR);
+		while (!miller_rabin_test(args->key.q, MR_ITERATIONS, args->verbose))
+			args->key.q = generate_random_number(args, SECOND_RND_NBR);
 		args->key.n = (uint64_t)args->key.p * (uint64_t)args->key.q;
 		if (args->key.n >= 0x8000000000000000)
 			break ;
+		if (args->verbose)
+			ft_printf("x");
 	}
 	args->key.phi = (uint64_t)(args->key.p - 1) * (uint64_t)(args->key.q - 1);
 	args->key.e = 65537;
+	errno = EKEYREVOKED;
 	if (greatest_common_divisor(args->key.e, args->key.phi) != 1)
-	{
-		errno = EKEYREVOKED;
 		print_rsa_strerror_and_exit("Error: 'e' and 'phi' not coprime", args);
-	}
 	args->key.d = modular_multiplicative_inverse(args->key.e, args->key.phi);
 	args->key.dmp1 = args->key.d % (args->key.p - 1);
 	args->key.dmq1 = args->key.d % (args->key.q - 1);
@@ -117,6 +123,8 @@ void	genrsa(t_rsa_args *args)
 {
 	t_encode_args	encode_args;
 
+	if (args->verbose)
+		ft_printf("Generating RSA private key, 64 bit long modulus\n");
 	key_calculation(args);
 	modify_key_values_endianness(&args->key);
 	ft_memcpy(args->private_key, &g_private_key, sizeof(g_private_key));
@@ -127,6 +135,8 @@ void	genrsa(t_rsa_args *args)
 	ft_memcpy(args->private_key + 69, &args->key.dmp1, sizeof(args->key.dmp1));
 	ft_memcpy(args->private_key + 76, &args->key.dmq1, sizeof(args->key.dmq1));
 	ft_memcpy(args->private_key + 83, &args->key.iqmp, sizeof(args->key.iqmp));
+	if (args->verbose)
+		ft_printf("\ne is 65537 (0x10001)\n");
 	ft_putstr_fd("-----BEGIN PRIVATE KEY-----\n", args->output_fd);
 	ft_bzero(&encode_args, sizeof(t_encode_args));
 	encode_args.message = args->private_key;
