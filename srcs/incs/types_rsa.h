@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 19:20:59 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/02/21 20:04:55 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/02/21 23:44:28 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,9 @@ typedef struct s_rsa_key
 	uint32_t	p;
 	uint32_t	q;
 	uint64_t	n;
+	uint64_t	phi;
+	uint64_t	e;
+	uint64_t	d;
 }	t_rsa_key;
 
 typedef struct s_rsa_args

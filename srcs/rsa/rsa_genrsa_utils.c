@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 22:46:06 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/02/21 22:47:15 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/02/22 01:06:44 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,53 @@ uint64_t	modular_exponentiation(uint64_t base, uint64_t exp, uint64_t mod)
 		base = modular_multiplication(base, base, mod);
 	}
 	return (result);
+}
+
+// https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm
+// Extended Euclidean algorithm to find the modular multiplicative inverse of
+// 'e' modulo 'phi'.
+uint64_t	modular_multiplicative_inverse(uint64_t e, uint64_t phi)
+{
+	int64_t		m0;
+	int64_t		t;
+	int64_t		q;
+	int64_t		x0;
+	int64_t		x1;
+
+	m0 = phi;
+	x0 = 0;
+	x1 = 1;
+	if (phi == 1)
+		return (0);
+	while (e > 1)
+	{
+		q = e / phi;
+		t = phi;
+		phi = e % phi;
+		e = t;
+		t = x0;
+		x0 = x1 - q * x0;
+		x1 = t;
+	}
+	if (x1 < 0)
+		x1 += m0;
+	return (x1);
+}
+
+// https://en.wikipedia.org/wiki/Greatest_common_divisor
+// https://en.wikipedia.org/wiki/Euclidean_algorithm
+// Calculate the greatest common divisor of two numbers 'a' and 'b'.
+uint64_t	greatest_common_divisor(uint64_t a, uint64_t b)
+{
+	uint64_t	tmp;
+
+	while (b != 0)
+	{
+		tmp = b;
+		b = a % b;
+		a = tmp;
+	}
+	return (a);
 }
 
 // Parser for genrsa command. Pretty simple since only needs to check for

@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 17:11:34 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/02/21 22:52:28 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/02/22 01:06:19 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,8 @@ void		print_total_usage(void);
 /********************************** rsa_genrsa_utils.c ************************/
 uint64_t	modular_multiplication(uint64_t a, uint64_t b, uint64_t mod);
 uint64_t	modular_exponentiation(uint64_t base, uint64_t exp, uint64_t mod);
+uint64_t	modular_multiplicative_inverse(uint64_t e, uint64_t phi);
+uint64_t	greatest_common_divisor(uint64_t a, uint64_t b);
 void		parse_genrsa_arguments(char **argv, t_rsa_args *args);
 
 /********************************** rsa_genrsa.c ******************************/

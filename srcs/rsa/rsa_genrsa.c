@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 12:15:02 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/02/21 23:04:04 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/02/22 01:14:21 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,13 @@ static uint32_t	generate_random_number(t_rsa_args *args)
 	return (random_number);
 }
 
-// RSA key generation main function.
-void	genrsa(t_rsa_args *args)
+// Generate two random prime numbers 'p' and 'q' of 32 bits each. Calculate 'n'
+// as the product of 'p' and 'q' until 'n' is greater than 2^63. Calculate 'phi'
+// as (p - 1) * (q - 1). Choose 'e' as 65537, it is a common choice for RSA
+// encryption. If 'e' and 'phi' are not coprime, an error is printed and the
+// program exits. Calculate 'd' as the modular multiplicative inverse of 'e' 
+// modulo 'phi'.
+void	key_calculation(t_rsa_args *args)
 {
 	while (1)
 	{
@@ -89,5 +94,21 @@ void	genrsa(t_rsa_args *args)
 		if (args->key.n >= 0x8000000000000000)
 			break ;
 	}
+	args->key.phi = (uint64_t)(args->key.p - 1) * (uint64_t)(args->key.q - 1);
+	args->key.e = 65537;
+	if (greatest_common_divisor(args->key.e, args->key.phi) != 1)
+	{
+		errno = EKEYREVOKED;
+		print_rsa_strerror_and_exit("Error: 'e' and 'phi' not coprime", args);
+	}
+	args->key.d = modular_multiplicative_inverse(args->key.e, args->key.phi);
+}
+
+// RSA key generation main function.
+void	genrsa(t_rsa_args *args)
+{
+	key_calculation(args);
 	printf("p: %u\nq: %u\nn: %lu\n", args->key.p, args->key.q, args->key.n);
+	printf("phi: %lu\n", args->key.phi);
+	printf("e: %lu\nd: %lu\n", args->key.e, args->key.d);
 }
