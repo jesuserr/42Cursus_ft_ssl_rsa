@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 12:15:02 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/02/22 01:14:21 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/02/22 17:38:51 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static uint32_t	generate_random_number(t_rsa_args *args)
 // encryption. If 'e' and 'phi' are not coprime, an error is printed and the
 // program exits. Calculate 'd' as the modular multiplicative inverse of 'e' 
 // modulo 'phi'.
-void	key_calculation(t_rsa_args *args)
+static void	key_calculation(t_rsa_args *args)
 {
 	while (1)
 	{
@@ -102,13 +102,45 @@ void	key_calculation(t_rsa_args *args)
 		print_rsa_strerror_and_exit("Error: 'e' and 'phi' not coprime", args);
 	}
 	args->key.d = modular_multiplicative_inverse(args->key.e, args->key.phi);
+	args->key.dmp1 = args->key.d % (args->key.p - 1);
+	args->key.dmq1 = args->key.d % (args->key.q - 1);
+	args->key.iqmp = (uint32_t)modular_multiplicative_inverse(args->key.q, \
+	args->key.p);
 }
 
 // RSA key generation main function.
+// Generates private key values and store them in the private key buffer with
+// the proper endianness according (PKCS#8 / ASN.1 / DER). Then encodes the
+// private key to base64 format (PEM) and is sent to the output file descriptor
+// (terminal or output file).
 void	genrsa(t_rsa_args *args)
 {
+	t_encode_args	encode_args;
+
 	key_calculation(args);
+	modify_key_values_endianness(&args->key);
+	ft_memcpy(args->private_key, &g_private_key, sizeof(g_private_key));
+	ft_memcpy(args->private_key + 30, &args->key.n, sizeof(args->key.n));
+	ft_memcpy(args->private_key + 45, &args->key.d, sizeof(args->key.d));
+	ft_memcpy(args->private_key + 56, &args->key.p, sizeof(args->key.p));
+	ft_memcpy(args->private_key + 63, &args->key.q, sizeof(args->key.q));
+	ft_memcpy(args->private_key + 69, &args->key.dmp1, sizeof(args->key.dmp1));
+	ft_memcpy(args->private_key + 76, &args->key.dmq1, sizeof(args->key.dmq1));
+	ft_memcpy(args->private_key + 83, &args->key.iqmp, sizeof(args->key.iqmp));
+	ft_putstr_fd("-----BEGIN PRIVATE KEY-----\n", args->output_fd);
+	ft_bzero(&encode_args, sizeof(t_encode_args));
+	encode_args.message = args->private_key;
+	encode_args.message_length = PRIV_KEY_LENGTH;
+	encode_args.output_fd = args->output_fd;
+	encode_message(&encode_args);
+	ft_putstr_fd("-----END PRIVATE KEY-----\n", args->output_fd);
+}
+
+/*
+	ft_hex_dump(args->private_key, sizeof(g_private_key), 24);
 	printf("p: %u\nq: %u\nn: %lu\n", args->key.p, args->key.q, args->key.n);
 	printf("phi: %lu\n", args->key.phi);
 	printf("e: %lu\nd: %lu\n", args->key.e, args->key.d);
-}
+	printf("dmp1: %u\ndmq1: %u\n", args->key.dmp1, args->key.dmq1);
+	printf("iqmp: %u\n", args->key.iqmp);
+*/

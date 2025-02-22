@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 17:11:34 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/02/22 01:06:19 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/02/22 15:48:42 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,12 +132,15 @@ void		print_hex_bytes(uint8_t *byte, uint8_t start, uint8_t end);
 void		print_error_and_exit(char *str);
 void		print_total_usage(void);
 
-/********************************** rsa_genrsa_utils.c ************************/
+/********************************** rsa_genrsa_maths.c ************************/
 uint64_t	modular_multiplication(uint64_t a, uint64_t b, uint64_t mod);
 uint64_t	modular_exponentiation(uint64_t base, uint64_t exp, uint64_t mod);
 uint64_t	modular_multiplicative_inverse(uint64_t e, uint64_t phi);
 uint64_t	greatest_common_divisor(uint64_t a, uint64_t b);
+
+/********************************** rsa_genrsa_utils.c ************************/
 void		parse_genrsa_arguments(char **argv, t_rsa_args *args);
+void		modify_key_values_endianness(t_rsa_key *key);
 
 /********************************** rsa_genrsa.c ******************************/
 void		genrsa(t_rsa_args *args);
