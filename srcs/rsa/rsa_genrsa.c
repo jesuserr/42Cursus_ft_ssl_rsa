@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 12:15:02 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/02/22 18:59:46 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/02/23 22:13:01 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,25 +122,19 @@ static void	key_calculation(t_rsa_args *args)
 void	genrsa(t_rsa_args *args)
 {
 	t_encode_args	encode_args;
+	uint8_t			private_key_len;
 
 	if (args->verbose)
 		ft_printf("Generating RSA private key, 64 bit long modulus\n");
 	key_calculation(args);
 	modify_key_values_endianness(&args->key);
-	ft_memcpy(args->private_key, &g_private_key, sizeof(g_private_key));
-	ft_memcpy(args->private_key + 30, &args->key.n, sizeof(args->key.n));
-	ft_memcpy(args->private_key + 45, &args->key.d, sizeof(args->key.d));
-	ft_memcpy(args->private_key + 56, &args->key.p, sizeof(args->key.p));
-	ft_memcpy(args->private_key + 63, &args->key.q, sizeof(args->key.q));
-	ft_memcpy(args->private_key + 69, &args->key.dmp1, sizeof(args->key.dmp1));
-	ft_memcpy(args->private_key + 76, &args->key.dmq1, sizeof(args->key.dmq1));
-	ft_memcpy(args->private_key + 83, &args->key.iqmp, sizeof(args->key.iqmp));
+	private_key_len = format_rsa_private_key(args);
 	if (args->verbose)
 		ft_printf("\ne is 65537 (0x10001)\n");
 	ft_putstr_fd("-----BEGIN PRIVATE KEY-----\n", args->output_fd);
 	ft_bzero(&encode_args, sizeof(t_encode_args));
 	encode_args.message = args->private_key;
-	encode_args.message_length = PRIV_KEY_LENGTH;
+	encode_args.message_length = private_key_len;
 	encode_args.output_fd = args->output_fd;
 	encode_message(&encode_args);
 	ft_putstr_fd("-----END PRIVATE KEY-----\n", args->output_fd);

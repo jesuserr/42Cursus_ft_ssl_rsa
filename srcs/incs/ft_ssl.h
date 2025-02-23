@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 17:11:34 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/02/22 15:48:42 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/02/23 21:17:05 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,9 @@ void		print_message_from_pipe(t_hash_args *args);
 void		print_hex_bytes(uint8_t *byte, uint8_t start, uint8_t end);
 void		print_error_and_exit(char *str);
 void		print_total_usage(void);
+
+/********************************** rsa_genrsa_format.c ***********************/
+uint8_t		format_rsa_private_key(t_rsa_args *args);
 
 /********************************** rsa_genrsa_maths.c ************************/
 uint64_t	modular_multiplication(uint64_t a, uint64_t b, uint64_t mod);
