@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 20:32:46 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/02/23 22:26:06 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/02/23 23:28:49 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,35 @@
 
 #define INTEGER_TAG 			0x02
 #define INITIAL_INDEX 			44
-#define INT32_WITH_EXTRA_BYTE 	0x05
-#define INT64_WITH_EXTRA_BYTE 	0x09
 #define MASK_64_MSB_ACTIVE		0x0000000000000080
 #define MASK_32_MSB_ACTIVE		0x00000080
+
+static uint8_t	insert_32bit_value(t_rsa_args *args, uint8_t i, uint32_t nbr)
+{
+	uint8_t	bytes;
+
+	args->private_key[i++] = INTEGER_TAG;
+	bytes = sizeof(uint32_t);
+	if (nbr & MASK_32_MSB_ACTIVE)
+		bytes++;
+	args->private_key[i++] = bytes;
+	i = i + bytes;
+	ft_memcpy(args->private_key + i - sizeof(uint32_t), &nbr, sizeof(uint32_t));
+	return (i);
+}
+
+static uint8_t	insert_64bit_value(t_rsa_args *args, uint8_t i, uint64_t nbr)
+{
+	uint8_t	bytes;
+
+	bytes = sizeof(uint64_t);
+	if (nbr & MASK_64_MSB_ACTIVE)
+		bytes++;
+	args->private_key[i++] = bytes;
+	i = i + bytes;
+	ft_memcpy(args->private_key + i - sizeof(uint64_t), &nbr, sizeof(uint64_t));
+	return (i);
+}
 
 // https://en.wikipedia.org/wiki/ASN.1
 // https://stackoverflow.com/questions/5974633/asn-1-der-formatted-private-key
@@ -27,74 +52,27 @@
 // masks are inverted since the endianness of all the numbers has been modified.
 uint8_t	format_rsa_private_key(t_rsa_args *args)
 {
-	uint8_t	i;
+	uint8_t	index;
 
 	ft_memcpy(args->private_key, &g_private_key, sizeof(g_private_key));
 	ft_memcpy(args->private_key + 30, &args->key.n, sizeof(args->key.n));
-	i = INITIAL_INDEX;
-	if (args->key.d & MASK_64_MSB_ACTIVE)
-	{
-		args->private_key[i++] = INT64_WITH_EXTRA_BYTE;
-		ft_memcpy(args->private_key + i + 1, &args->key.d, sizeof(uint64_t));
-		i = i + INT64_WITH_EXTRA_BYTE;
-	}
-	else
-	{
-		args->private_key[i++] = sizeof(uint64_t);
-		ft_memcpy(args->private_key + i, &args->key.d, sizeof(uint64_t));
-		i = i + sizeof(uint64_t);
-	}
-	args->private_key[i++] = INTEGER_TAG;
-	args->private_key[i++] = INT32_WITH_EXTRA_BYTE;
-	ft_memcpy(args->private_key + i + 1, &args->key.p, sizeof(uint32_t));
-	i = i + INT32_WITH_EXTRA_BYTE;
-	args->private_key[i++] = INTEGER_TAG;
-	args->private_key[i++] = INT32_WITH_EXTRA_BYTE;
-	ft_memcpy(args->private_key + i + 1, &args->key.q, sizeof(uint32_t));
-	i = i + INT32_WITH_EXTRA_BYTE;
-	args->private_key[i++] = INTEGER_TAG;
-	if (args->key.dmp1 & MASK_32_MSB_ACTIVE)
-	{
-		args->private_key[i++] = INT32_WITH_EXTRA_BYTE;
-		ft_memcpy(args->private_key + i + 1, &args->key.dmp1, sizeof(uint32_t));
-		i = i + INT32_WITH_EXTRA_BYTE;
-	}
-	else
-	{
-		args->private_key[i++] = sizeof(uint32_t);
-		ft_memcpy(args->private_key + i, &args->key.dmp1, sizeof(uint32_t));
-		i = i + sizeof(uint32_t);
-	}
-	args->private_key[i++] = INTEGER_TAG;
-	if (args->key.dmq1 & MASK_32_MSB_ACTIVE)
-	{
-		args->private_key[i++] = INT32_WITH_EXTRA_BYTE;
-		ft_memcpy(args->private_key + i + 1, &args->key.dmq1, sizeof(uint32_t));
-		i = i + INT32_WITH_EXTRA_BYTE;
-	}
-	else
-	{
-		args->private_key[i++] = sizeof(uint32_t);
-		ft_memcpy(args->private_key + i, &args->key.dmq1, sizeof(uint32_t));
-		i = i + sizeof(uint32_t);
-	}
-	args->private_key[i++] = INTEGER_TAG;
-	if (args->key.iqmp & MASK_32_MSB_ACTIVE)
-	{
-		args->private_key[i++] = INT32_WITH_EXTRA_BYTE;
-		ft_memcpy(args->private_key + i + 1, &args->key.iqmp, sizeof(uint32_t));
-		i = i + INT32_WITH_EXTRA_BYTE;
-	}
-	else
-	{
-		args->private_key[i++] = sizeof(uint32_t);
-		ft_memcpy(args->private_key + i, &args->key.iqmp, sizeof(uint32_t));
-		i = i + sizeof(uint32_t);
-	}
-	args->private_key[1] = i - 2;
-	args->private_key[21] = i - 22;
-	args->private_key[23] = i - 24;
-	return (i);
+	index = INITIAL_INDEX;
+	index = insert_64bit_value(args, index, args->key.d);
+	args->private_key[index++] = INTEGER_TAG;
+	args->private_key[index++] = sizeof(uint32_t) + 1;
+	ft_memcpy(args->private_key + index + 1, &args->key.p, sizeof(uint32_t));
+	index = index + sizeof(uint32_t) + 1;
+	args->private_key[index++] = INTEGER_TAG;
+	args->private_key[index++] = sizeof(uint32_t) + 1;
+	ft_memcpy(args->private_key + index + 1, &args->key.q, sizeof(uint32_t));
+	index = index + sizeof(uint32_t) + 1;
+	index = insert_32bit_value(args, index, args->key.dmp1);
+	index = insert_32bit_value(args, index, args->key.dmq1);
+	index = insert_32bit_value(args, index, args->key.iqmp);
+	args->private_key[1] = index - 2;
+	args->private_key[21] = index - 22;
+	args->private_key[23] = index - 24;
+	return (index);
 }
 // Although doesn't has a impact on the key content, it should be checked the
 // real significant bytes of a number and write next to the integer tag only the
