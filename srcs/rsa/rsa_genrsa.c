@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 12:15:02 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/02/23 22:13:01 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/02/24 13:31:42 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,11 @@
 // Input #1: n > 2, an odd integer to be tested for primality
 // Input #2: k, the number of rounds of testing to perform (accuracy) MAX: 255
 // Output: "false" if n is found to be composite, otherwise probably prime.
-// No need to initialize 'd' since 'n' will be odd and while loop will be run at
-// least once. 'a' is initialized to 2 and incremented in each iteration.
-static bool	miller_rabin_test(uint64_t n, uint8_t k, bool verbose)
+// No need to initialize 'd' since 'n' will be odd and first while loop will run
+// at least once. 'a' is initialized to 2 and incremented in each iteration.
+// No need to initialize 'y' since it will be calculated in the second while
+// loop which will run at least once.
+bool	miller_rabin_test(uint64_t n, uint8_t k, bool verbose)
 {
 	t_miller_rabin_args	args;
 

@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 22:21:30 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/02/22 18:35:30 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/02/24 13:15:20 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ static void	print_total_usage_continued(void)
 		"  -encrypt        encrypt input data with public key\n"
 		"  -decrypt        decrypt input data with private key\n"
 		"  -hexdump        print the key in hexadecimal\n"
-		"  -verbose        print details during key generation\n");
+		"  -verbose        print details during key generation\n"
+		"  -test <n> <p>   test if n is prime at p probability\n");
 	exit(EXIT_SUCCESS);
 }

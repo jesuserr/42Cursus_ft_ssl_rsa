@@ -6,15 +6,40 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 22:46:06 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/02/22 18:50:41 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/02/24 14:04:35 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/ft_ssl.h"
 
-// Parser for genrsa command. Pretty simple since only needs to check for
-// output file and help flag. If everything is correct, it calls the genrsa
-// function.
+// Probability from 0 to 100 is converted to the number of iterations for the
+// Miller-Rabin test, where 0 would be 0 and 100 would be MR_ITERATIONS.
+static void	test_prime_number(const char *number, const char *p)
+{
+	uint64_t	nbr;
+
+	if (ft_strlen(p) > 3 || !check_if_only_digits(p) || ft_atoi(p) > 100)
+		print_error_and_exit("Probability value must be between 0 and 100");
+	if (ft_strlen(number) > 20 || !check_if_only_digits(number) || \
+	!string_to_uint64(number, &nbr))
+		print_error_and_exit("Number is not a 64 bits unsigned integer");
+	if (nbr < 2)
+		print_error_and_exit("Number must be greater than 1");
+	ft_printf("Prime number tester in progress...\n");
+	if (nbr == 2)
+	{
+		ft_printf("Number 2 is prime\n");
+		exit(EXIT_SUCCESS);
+	}
+	if (miller_rabin_test(nbr, (ft_atoi(p) * MR_ITERATIONS) / 100, false))
+		ft_printf("Number %s is probably prime at %s%%\n", number, p);
+	else
+		ft_printf("Number %s is not prime\n", number);
+	exit(EXIT_SUCCESS);
+}
+
+// Parser for genrsa command. Checks for output file, help and verbose flags.
+// Also checks for -test flag to test if a number is prime.
 void	parse_genrsa_arguments(char **argv, t_rsa_args *args)
 {
 	int	i;
@@ -32,6 +57,10 @@ void	parse_genrsa_arguments(char **argv, t_rsa_args *args)
 			args->output_file_name = argv[i + 1];
 			i++;
 		}
+		else if (!ft_strncmp(argv[i], "-test", 5) && ft_strlen(argv[i]) == 5 && \
+		argv[i + 1] && argv[i + 1][0] != '-' && argv[i + 2] && \
+		argv[i + 2][0] != '-')
+			test_prime_number(argv[i + 1], argv[i + 2]);
 		else if (!ft_strncmp(argv[i], "-verbose", 8) && ft_strlen(argv[i]) == 8 \
 		&& !args->verbose)
 			args->verbose = true;

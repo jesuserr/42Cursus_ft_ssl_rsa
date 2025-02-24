@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 17:11:34 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/02/23 21:17:05 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/02/24 14:03:46 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ uint64_t	right_rotation_64(uint64_t nbr, int8_t bits);
 /********************************** common_utils.c ****************************/
 void		read_interactive_mode(char **input_pipe, uint64_t *pipe_size);
 void		set_flag_values(bool *boolean_field, char **string_field);
+bool		check_if_only_digits(const char *str);
+bool		string_to_uint64(const char *str, uint64_t *value);
 
 /********************************** encode_parser.c ***************************/
 void		parse_encode_arguments(int argc, char **argv, t_encode_args *args);
@@ -146,6 +148,7 @@ void		parse_genrsa_arguments(char **argv, t_rsa_args *args);
 void		modify_key_values_endianness(t_rsa_key *key);
 
 /********************************** rsa_genrsa.c ******************************/
+bool		miller_rabin_test(uint64_t n, uint8_t k, bool verbose);
 void		genrsa(t_rsa_args *args);
 
 /********************************** rsa_utils.c *******************************/

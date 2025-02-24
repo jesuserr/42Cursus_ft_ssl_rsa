@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 13:58:37 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/01/29 12:29:45 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/02/24 14:03:34 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,33 @@ void	set_flag_values(bool *boolean_field, char **string_field)
 {
 	*boolean_field = true;
 	*string_field = optarg;
+}
+
+// Checks if the string is composed only by digits, in that case returns true.
+bool	check_if_only_digits(const char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (false);
+		i++;
+	}
+	return (true);
+}
+
+// Converts a string to uint64_t and return true if successful, false otherwise.
+// The converted value is stored in the 'value' pointer.
+// https://man7.org/linux/man-pages/man3/strtoul.3p.html
+bool	string_to_uint64(const char *str, uint64_t *value)
+{
+	char	*endptr;
+
+	errno = 0;
+	*value = strtoull(str, &endptr, 10);
+	if (errno != 0 || endptr == str || *endptr != '\0' || *value > UINT64_MAX)
+		return (false);
+	return (true);
 }

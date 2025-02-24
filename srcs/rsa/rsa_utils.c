@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 11:59:02 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/02/22 18:35:40 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/02/24 13:14:05 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,8 @@ void	print_rsa_usage(void)
 		"  -encrypt        encrypt input data with public key\n"
 		"  -decrypt        decrypt input data with private key\n"
 		"  -hexdump        print the key in hexadecimal\n"
-		"  -verbose        print details during key generation\n");
+		"  -verbose        print details during key generation\n"
+		"  -test <n> <p>   test if n is prime at p probability\n");
 	exit(EXIT_SUCCESS);
 }
 
