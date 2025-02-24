@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 15:45:42 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/02/22 15:46:58 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/02/24 15:54:47 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,18 @@ uint64_t	modular_multiplication(uint64_t a, uint64_t b, uint64_t mod)
 	a = a % mod;
 	while (b > 0)
 	{
-		if (b % 2 == 1)
-			result = (result + a) % mod;
-		a = (a * 2) % mod;
-		b = b / 2;
+		if (b & 1)
+		{
+			if (result >= mod - a)
+				result -= (mod - a);
+			else
+				result += a;
+		}
+		b >>= 1;
+		if (a >= mod - a)
+			a -= (mod - a);
+		else
+			a <<= 1;
 	}
 	return (result);
 }

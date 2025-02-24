@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 19:20:59 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/02/23 21:25:04 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/02/24 15:06:50 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ typedef struct s_miller_rabin_args
 	uint64_t	a;
 	uint64_t	x;
 	uint64_t	y;
+	uint64_t	s_copy;
 }	t_miller_rabin_args;
 
 enum	e_rsa_functions

@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 12:15:02 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/02/24 13:31:42 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/02/24 15:22:00 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,31 +16,32 @@
 // Input #1: n > 2, an odd integer to be tested for primality
 // Input #2: k, the number of rounds of testing to perform (accuracy) MAX: 255
 // Output: "false" if n is found to be composite, otherwise probably prime.
-// No need to initialize 'd' since 'n' will be odd and first while loop will run
-// at least once. 'a' is initialized to 2 and incremented in each iteration.
-// No need to initialize 'y' since it will be calculated in the second while
-// loop which will run at least once.
+// 'a' is initialized to 2 and incremented in each iteration.
 bool	miller_rabin_test(uint64_t n, uint8_t k, bool verbose)
 {
 	t_miller_rabin_args	args;
 
-	args.s = 1;
-	while (((n - 1) % ((uint64_t)1 << args.s)) == 0)
-		args.d = (n - 1) / ((uint64_t)1 << args.s++);
-	args.s--;
+	args.s = 0;
+	args.d = n - 1;
+	while ((args.d & 1) == 0)
+	{
+		args.d >>= 1;
+		args.s++;
+	}
 	args.a = 2;
+	args.s_copy = args.s;
 	while (k--)
 	{
 		args.x = modular_exponentiation(args.a, args.d, n);
-		while (args.s > 0)
+		args.s = args.s_copy;
+		while (args.s-- > 0)
 		{
 			args.y = modular_multiplication(args.x, args.x, n);
 			if (args.y == 1 && args.x != 1 && args.x != n - 1)
 				return (false);
 			args.x = args.y;
-			args.s--;
 		}
-		if (args.y != 1)
+		if (args.x != 1)
 			return (false);
 		args.a++;
 	}
