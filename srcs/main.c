@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 17:12:21 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/02/19 22:48:51 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/02/24 19:27:24 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,8 @@ int	main(int argc, char **argv)
 		calls_to_encrypt_function(&encrypt_args);
 	}
 	else if (pre_parser(argc, argv) == RSA_COMMAND)
-	{
-		choose_rsa_parsing(argc, argv, &rsa_args);
-		//calls_to_rsa_function(&rsa_args);
-	}
+		choose_rsa_function(argc, argv, &rsa_args);
 	else
-		print_error_and_exit("Wrong Hash/Cipher command");
+		print_error_and_exit("Wrong Hash/Cipher/RSA command");
 	return (EXIT_SUCCESS);
 }

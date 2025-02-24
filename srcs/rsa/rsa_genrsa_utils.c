@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 22:46:06 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/02/24 14:04:35 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/02/24 21:30:52 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,17 +75,4 @@ void	parse_genrsa_arguments(char **argv, t_rsa_args *args)
 		if (args->output_fd == -1)
 			print_rsa_strerror_and_exit(args->output_file_name, args);
 	}
-	genrsa(args);
-}
-
-// Modifies the endianess of the RSA key values to be stored in the private key
-void	modify_key_values_endianness(t_rsa_key *key)
-{
-	modify_endianness_64_bits(&key->n);
-	modify_endianness_64_bits(&key->d);
-	modify_endianness_32_bits(&key->p);
-	modify_endianness_32_bits(&key->q);
-	modify_endianness_32_bits(&key->dmp1);
-	modify_endianness_32_bits(&key->dmq1);
-	modify_endianness_32_bits(&key->iqmp);
 }

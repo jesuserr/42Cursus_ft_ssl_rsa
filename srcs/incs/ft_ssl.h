@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 17:11:34 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/02/24 14:03:46 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/02/24 21:33:29 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@
 # include "des_cbc.h"						    // for des-cbc encrypt function
 # include "des_cfb.h"						    // for des-cfb encrypt function
 # include "des_ofb.h"						    // for des-cob encrypt function
-# include "genrsa.h"						    // for genrsa function
 # include <string.h>							// for strerror
 # include <fcntl.h>								// for open
 # include <errno.h>								// for errno
@@ -145,16 +144,18 @@ uint64_t	greatest_common_divisor(uint64_t a, uint64_t b);
 
 /********************************** rsa_genrsa_utils.c ************************/
 void		parse_genrsa_arguments(char **argv, t_rsa_args *args);
-void		modify_key_values_endianness(t_rsa_key *key);
 
 /********************************** rsa_genrsa.c ******************************/
 bool		miller_rabin_test(uint64_t n, uint8_t k, bool verbose);
 void		genrsa(t_rsa_args *args);
 
+/********************************** rsa_rsa_parser.c **************************/
+void		parse_rsa_arguments(int argc, char **argv, t_rsa_args *args);
+
 /********************************** rsa_utils.c *******************************/
 void		calls_to_rsa_function(t_rsa_args *args);
 void		print_rsa_usage(void);
 void		print_rsa_strerror_and_exit(char *msg, t_rsa_args *args);
-void		choose_rsa_parsing(int argc, char **argv, t_rsa_args *args);
+void		choose_rsa_function(int argc, char **argv, t_rsa_args *args);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 11:59:02 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/02/24 13:14:05 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/02/24 20:19:36 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,11 +83,11 @@ void	print_rsa_strerror_and_exit(char *msg, t_rsa_args *args)
 	ft_putstr_fd("\n", STDERR_FILENO);
 	if (args->output_to_file && args->output_fd != STDOUT_FILENO)
 		close(args->output_fd);
-	/*
 	if (args->input_pipe)
 		free(args->input_pipe);
 	if (args->input_file)
 		munmap(args->input_file, args->input_file_size);
+	/*
 	if (!args->pass_provided && args->pass)
 		free(args->pass);
 	if (args->plaintext)
@@ -98,16 +98,21 @@ void	print_rsa_strerror_and_exit(char *msg, t_rsa_args *args)
 	exit(EXIT_FAILURE);
 }
 
-void	choose_rsa_parsing(int argc, char **argv, t_rsa_args *args)
+void	choose_rsa_function(int argc, char **argv, t_rsa_args *args)
 {
-	(void)argc;
 	if (!ft_strncmp(argv[1], "genrsa", 6) && ft_strlen(argv[1]) == 6)
 	{
 		args->rsa_function = GENRSA;
 		parse_genrsa_arguments(argv, args);
+		genrsa(args);
 	}
 	else if (!ft_strncmp(argv[1], "rsa", 3) && ft_strlen(argv[1]) == 3)
+	{
 		args->rsa_function = RSA;
+		parse_rsa_arguments(argc, argv, args);
+	}
 	else if (!ft_strncmp(argv[1], "rsautl", 6) && ft_strlen(argv[1]) == 6)
+	{
 		args->rsa_function = RSAUTL;
+	}
 }
