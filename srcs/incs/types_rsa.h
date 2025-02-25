@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 19:20:59 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/02/24 20:59:11 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/02/25 10:18:17 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,12 @@ typedef struct s_rsa_args
 {
 	char		*input_pipe;
 	char		*input_file;
+	char		*message;
 	char		*input_file_name;
 	char		*output_file_name;
 	uint64_t	input_file_size;
 	uint64_t	pipe_size;
+	uint64_t	message_length;
 	char		private_key[PRIV_KEY_MAX_LENGTH];
 	int			output_fd;
 	bool		input_from_file;

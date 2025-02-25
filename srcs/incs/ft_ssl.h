@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 17:11:34 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/02/24 21:33:29 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/02/25 09:54:45 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,9 @@ void		genrsa(t_rsa_args *args);
 
 /********************************** rsa_rsa_parser.c **************************/
 void		parse_rsa_arguments(int argc, char **argv, t_rsa_args *args);
+
+/********************************** rsa_rsa.c *********************************/
+void		rsa(t_rsa_args *args);
 
 /********************************** rsa_utils.c *******************************/
 void		calls_to_rsa_function(t_rsa_args *args);

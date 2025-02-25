@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 12:15:02 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/02/24 21:36:44 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/02/25 10:37:09 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,6 @@ void	genrsa(t_rsa_args *args)
 	encode_args.output_fd = args->output_fd;
 	encode_message(&encode_args);
 	ft_putstr_fd("-----END PRIVATE KEY-----\n", args->output_fd);
-	close(args->output_fd);
 }
 
 /*

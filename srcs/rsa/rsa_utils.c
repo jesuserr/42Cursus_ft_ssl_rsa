@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 11:59:02 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/02/24 20:19:36 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/02/25 10:57:02 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 // At the contrary of the hashing functions, the encrypt function is just 
 // called once, since the input can only come from one source. File has
 // priority over pipe, so if both are provided, the pipe will be ignored.
-/*
-void	calls_to_rsa_function(t_rsa_args *args)
+void	calls_to_rsa_functions(t_rsa_args *args)
 {
-	//void	(*encrpyt_functions[])(t_rsa_args *) = {genrsa, rsa, rsautl};
-	void	(*rsa_functions[])(t_rsa_args *) = {genrsa};
+	void	(*rsa_functions[])(t_rsa_args *) = {genrsa, rsa};
 
+	if (args->rsa_function == GENRSA)
+		rsa_functions[args->rsa_function](args);
 	if (args->input_pipe)
 	{
 		args->message = args->input_pipe;
@@ -40,10 +40,7 @@ void	calls_to_rsa_function(t_rsa_args *args)
 	if (args->output_to_file && args->output_fd != STDOUT_FILENO)
 		if (close(args->output_fd) < 0)
 			print_rsa_strerror_and_exit("close", args);
-	if (!args->pass_provided && args->pass)
-		free(args->pass);
 }
-*/
 
 void	print_rsa_usage(void)
 {
@@ -104,12 +101,13 @@ void	choose_rsa_function(int argc, char **argv, t_rsa_args *args)
 	{
 		args->rsa_function = GENRSA;
 		parse_genrsa_arguments(argv, args);
-		genrsa(args);
+		calls_to_rsa_functions(args);
 	}
 	else if (!ft_strncmp(argv[1], "rsa", 3) && ft_strlen(argv[1]) == 3)
 	{
 		args->rsa_function = RSA;
 		parse_rsa_arguments(argc, argv, args);
+		calls_to_rsa_functions(args);
 	}
 	else if (!ft_strncmp(argv[1], "rsautl", 6) && ft_strlen(argv[1]) == 6)
 	{
