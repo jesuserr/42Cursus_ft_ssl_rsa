@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 12:15:02 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/02/25 10:37:09 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/02/26 10:06:26 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,12 +119,11 @@ static void	key_calculation(t_rsa_args *args)
 
 // RSA key generation main function.
 // Generates private key values and store them in the private key buffer with
-// the proper endianness according (PKCS#8 / ASN.1 / DER). Then encodes the
+// the proper endianness according (PKCS#1 / ASN.1 / DER). Then encodes the
 // private key to base64 format (PEM) and is sent to the output file descriptor
 // (terminal or output file).
 void	genrsa(t_rsa_args *args)
 {
-	t_encode_args	encode_args;
 	uint8_t			private_key_len;
 
 	if (args->verbose)
@@ -133,13 +132,9 @@ void	genrsa(t_rsa_args *args)
 	private_key_len = format_rsa_private_key(args);
 	if (args->verbose)
 		ft_printf("\ne is 65537 (0x10001)\n");
-	ft_putstr_fd("-----BEGIN PRIVATE KEY-----\n", args->output_fd);
-	ft_bzero(&encode_args, sizeof(t_encode_args));
-	encode_args.message = args->private_key;
-	encode_args.message_length = private_key_len;
-	encode_args.output_fd = args->output_fd;
-	encode_message(&encode_args);
-	ft_putstr_fd("-----END PRIVATE KEY-----\n", args->output_fd);
+	ft_putstr_fd("-----BEGIN RSA PRIVATE KEY-----\n", args->output_fd);
+	encode_key(args, private_key_len);
+	ft_putstr_fd("-----END RSA PRIVATE KEY-----\n", args->output_fd);
 }
 
 /*

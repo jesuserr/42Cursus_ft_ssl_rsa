@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 17:11:34 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/02/25 09:54:45 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/02/26 11:02:41 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,10 @@ void		print_message_from_pipe(t_hash_args *args);
 void		print_hex_bytes(uint8_t *byte, uint8_t start, uint8_t end);
 void		print_error_and_exit(char *str);
 void		print_total_usage(void);
+
+/********************************** rsa_encode_utils.c ************************/
+void		encode_key(t_rsa_args *args, uint8_t key_length);
+void		decode_key(t_rsa_args *args);
 
 /********************************** rsa_genrsa_format.c ***********************/
 uint8_t		format_rsa_private_key(t_rsa_args *args);

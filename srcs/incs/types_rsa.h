@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 19:20:59 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/02/25 10:18:17 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/02/26 13:57:28 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 # define PRIV_KEY_MAX_LENGTH	89U			// Private key max length in bytes
 # define FIRST_RND_NBR			1U			// First random number generated
 # define SECOND_RND_NBR			2U			// Second random number generated
+# define RSA_PUB_KEY_HEADER		31U			// Header length RSA public key
+# define RSA_PRIV_KEY_HEADER	32U			// Header length RSA private key
 
 /*
 ** -.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-
@@ -45,17 +47,23 @@ typedef struct s_rsa_args
 	char		*input_pipe;
 	char		*input_file;
 	char		*message;
+	char		encoded_key[PRIV_KEY_MAX_LENGTH * 2];
+	char		decoded_key[PRIV_KEY_MAX_LENGTH];
 	char		*input_file_name;
 	char		*output_file_name;
 	uint64_t	input_file_size;
 	uint64_t	pipe_size;
 	uint64_t	message_length;
+	uint8_t		encoded_key_length;
+	uint8_t		decoded_key_length;
 	char		private_key[PRIV_KEY_MAX_LENGTH];
 	int			output_fd;
 	bool		input_from_file;
 	bool		output_to_file;
 	bool		verbose;
 	uint8_t		rsa_function;
+	uint8_t		pem_header;
+	uint8_t		pem_footer;
 	t_rsa_key	key;
 }	t_rsa_args;
 
