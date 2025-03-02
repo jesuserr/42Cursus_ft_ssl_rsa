@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 12:15:02 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/03/02 19:24:03 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/03/02 21:32:02 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,12 @@
 
 // https://en.wikipedia.org/wiki/Miller-Rabin_primality_test#Miller-Rabin_test
 // Input #1: n > 2, an odd integer to be tested for primality
-// Input #2: k, the number of rounds of testing to perform (accuracy) MAX: 255
+// Input #2: k, the number of rounds of testing to perform (accuracy)
+// Maximum value of 'k' is 60, to avoid overflow of 'a' (see below).
 // Output: "false" if n is found to be composite, otherwise probably prime.
-// 'a' is initialized to 2 and incremented in each iteration.
+// 'a' is initialized to 2 and doubled in each iteration. According to wikipedia
+// it should be a random number in the range [2, n - 2], but subject does not
+// allow rand() use and I don't want to call generate_random_number() each time.
 bool	miller_rabin_test(uint64_t n, uint8_t k, bool verbose)
 {
 	t_miller_rabin_args	args;
@@ -43,7 +46,7 @@ bool	miller_rabin_test(uint64_t n, uint8_t k, bool verbose)
 		}
 		if (args.x != 1)
 			return (false);
-		args.a++;
+		args.a *= 2;
 	}
 	if (verbose)
 		ft_printf("+");
@@ -136,12 +139,3 @@ void	genrsa(t_rsa_args *args)
 	encode_key(args, private_key_len);
 	ft_putstr_fd("-----END RSA PRIVATE KEY-----\n", args->output_fd);
 }
-
-/*
-	ft_hex_dump(args->private_key, sizeof(g_private_key), 24);
-	printf("p: %u\nq: %u\nn: %lu\n", args->key.p, args->key.q, args->key.n);
-	printf("phi: %lu\n", args->key.phi);
-	printf("e: %lu\nd: %lu\n", args->key.e, args->key.d);
-	printf("dmp1: %u\ndmq1: %u\n", args->key.dmp1, args->key.dmq1);
-	printf("iqmp: %u\n", args->key.iqmp);
-*/
