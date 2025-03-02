@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 22:21:30 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/02/24 13:15:20 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/03/02 13:53:19 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,4 +104,11 @@ static void	print_total_usage_continued(void)
 		"  -verbose        print details during key generation\n"
 		"  -test <n> <p>   test if n is prime at p probability\n");
 	exit(EXIT_SUCCESS);
+}
+
+void	print_uint64_number(uint64_t nbr)
+{
+	if (nbr >= 10)
+		print_uint64_number(nbr / 10);
+	ft_putchar_fd((nbr % 10) + '0', STDOUT_FILENO);
 }

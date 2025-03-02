@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 20:32:46 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/02/24 21:36:58 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/03/01 23:24:47 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #define MASK_32_MSB_ACTIVE		0x00000080
 
 // Modifies the endianess of the RSA key values to be stored in the private key
-static void	modify_key_values_endianness(t_rsa_key *key)
+void	modify_key_values_endianness(t_rsa_key *key)
 {
 	modify_endianness_64_bits(&key->n);
 	modify_endianness_64_bits(&key->d);

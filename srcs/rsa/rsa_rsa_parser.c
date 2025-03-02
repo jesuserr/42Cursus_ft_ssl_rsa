@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 19:17:24 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/02/25 09:46:33 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/03/02 14:19:06 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,15 @@ void	parse_rsa_arguments(int argc, char **argv, t_rsa_args *args)
 		else if (!ft_strncmp(argv[i], "-outform", 8) && ft_strlen(argv[i]) == 8 \
 		&& !ft_strncmp(argv[i + 1], "PEM", 3) && ft_strlen(argv[i + 1]) == 3)
 			i++;
+		else if (!ft_strncmp(argv[i], "-text", 5) && ft_strlen(argv[i]) == 5 && \
+		!args->text)
+			args->text = true;
+		else if (!ft_strncmp(argv[i], "-noout", 6) && ft_strlen(argv[i]) == 6 \
+		&& !args->noout)
+			args->noout = true;
+		else if (!ft_strncmp(argv[i], "-modulus", 8) && ft_strlen(argv[i]) == 8 \
+		&& !args->modulus)
+			args->modulus = true;
 		else
 			print_error_and_exit("Not recognized option");
 		i++;
@@ -138,4 +147,3 @@ void	parse_rsa_arguments(int argc, char **argv, t_rsa_args *args)
 			print_rsa_strerror_and_exit(args->output_file_name, args);
 	}
 }
-// limpiar alocaciones de memoria y file descriptors

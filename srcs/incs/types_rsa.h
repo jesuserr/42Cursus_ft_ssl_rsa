@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 19:20:59 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/02/26 13:57:28 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/03/02 14:19:20 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,9 @@ typedef struct s_rsa_args
 	bool		input_from_file;
 	bool		output_to_file;
 	bool		verbose;
+	bool		text;
+	bool		noout;
+	bool		modulus;
 	uint8_t		rsa_function;
 	uint8_t		pem_header;
 	uint8_t		pem_footer;
