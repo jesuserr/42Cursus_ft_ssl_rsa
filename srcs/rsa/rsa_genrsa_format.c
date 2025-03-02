@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 20:32:46 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/03/01 23:24:47 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/03/02 19:19:16 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,18 @@ void	modify_key_values_endianness(t_rsa_key *key)
 	modify_endianness_32_bits(&key->iqmp);
 }
 
+// Generate RSA public key in ASN.1 DER format. It is assumed that the total 
+// length of the public key will be always the same (38 bytes). It is composed
+// by fixed header and two values, n and e, where n is 9 bytes and e 3 bytes.
+uint8_t	format_rsa_public_key(t_rsa_args *args)
+{
+	modify_key_values_endianness(&args->key);
+	ft_memcpy(args->public_key, &g_public_key, sizeof(g_public_key));
+	ft_memcpy(args->public_key + 25, &args->key.n, sizeof(args->key.n));
+	return (PUB_KEY_MAX_LENGTH);
+}
+
+// Auxiliary function to insert a 32-bit value in the private key.
 static uint8_t	insert_32bit_value(t_rsa_args *args, uint8_t i, uint32_t nbr)
 {
 	uint8_t	bytes;
@@ -43,6 +55,7 @@ static uint8_t	insert_32bit_value(t_rsa_args *args, uint8_t i, uint32_t nbr)
 	return (i);
 }
 
+// Auxiliary function to insert a 64-bit value in the private key.
 static uint8_t	insert_64bit_value(t_rsa_args *args, uint8_t i, uint64_t nbr)
 {
 	uint8_t	bytes;

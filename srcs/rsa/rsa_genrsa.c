@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 12:15:02 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/02/26 10:06:26 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/03/02 19:24:03 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ static void	key_calculation(t_rsa_args *args)
 	args->key.p);
 }
 
-// RSA key generation main function.
+// GENRSA key generation main function.
 // Generates private key values and store them in the private key buffer with
 // the proper endianness according (PKCS#1 / ASN.1 / DER). Then encodes the
 // private key to base64 format (PEM) and is sent to the output file descriptor

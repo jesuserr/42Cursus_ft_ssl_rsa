@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 19:17:24 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/03/02 14:19:06 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/03/02 19:21:09 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +87,10 @@ static void	parse_file_content(t_rsa_args *args, char *file_name)
 
 // Parser for rsa command.
 // Input from file has priority over input from pipe.
-void	parse_rsa_arguments(int argc, char **argv, t_rsa_args *args)
+void	parse_rsa_arguments(char **argv, t_rsa_args *args)
 {
 	int	i;
 
-	(void)argc;
 	args->output_fd = STDOUT_FILENO;
 	i = 2;
 	while (argv[i])
@@ -127,6 +126,14 @@ void	parse_rsa_arguments(int argc, char **argv, t_rsa_args *args)
 		else if (!ft_strncmp(argv[i], "-modulus", 8) && ft_strlen(argv[i]) == 8 \
 		&& !args->modulus)
 			args->modulus = true;
+		else if (!ft_strncmp(argv[i], "-pubout", 7) && ft_strlen(argv[i]) == 7)
+			args->pub_out = true;
+		else if (!ft_strncmp(argv[i], "-pubin", 6) && ft_strlen(argv[i]) == 6 \
+		&& !args->pub_in)
+		{
+			args->pub_in = true;
+			args->pub_out = true;
+		}
 		else
 			print_error_and_exit("Not recognized option");
 		i++;

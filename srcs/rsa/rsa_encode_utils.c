@@ -6,20 +6,23 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 09:40:59 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/03/01 20:01:13 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/03/02 19:13:58 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/ft_ssl.h"
 
-// Encode key to base64 format and send it to the output file descriptor
-// (terminal or output file).
+// Encode private/public key to base64 format and send it to the output file
+// descriptor (terminal or output file).
 void	encode_key(t_rsa_args *args, uint8_t key_length)
 {
 	t_encode_args	encode_args;
 
 	ft_bzero(&encode_args, sizeof(t_encode_args));
-	encode_args.message = args->private_key;
+	if (args->pub_out)
+		encode_args.message = args->public_key;
+	else
+		encode_args.message = args->private_key;
 	encode_args.message_length = key_length;
 	encode_args.output_fd = args->output_fd;
 	encode_message(&encode_args);

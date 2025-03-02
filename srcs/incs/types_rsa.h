@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 19:20:59 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/03/02 14:19:20 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/03/02 19:13:30 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # define RSA_KEY_LENGTH			8U			// Key length in bytes (64 bits)
 # define MR_ITERATIONS			30U			// Iterations for Miller-Rabin test
 # define PRIV_KEY_MAX_LENGTH	89U			// Private key max length in bytes
+# define PUB_KEY_MAX_LENGTH		38U			// Public key max length in bytes
 # define FIRST_RND_NBR			1U			// First random number generated
 # define SECOND_RND_NBR			2U			// Second random number generated
 # define RSA_PUB_KEY_HEADER		31U			// Header length RSA public key
@@ -57,6 +58,7 @@ typedef struct s_rsa_args
 	uint8_t		encoded_key_length;
 	uint8_t		decoded_key_length;
 	char		private_key[PRIV_KEY_MAX_LENGTH];
+	char		public_key[PUB_KEY_MAX_LENGTH];
 	int			output_fd;
 	bool		input_from_file;
 	bool		output_to_file;
@@ -64,6 +66,8 @@ typedef struct s_rsa_args
 	bool		text;
 	bool		noout;
 	bool		modulus;
+	bool		pub_out;
+	bool		pub_in;
 	uint8_t		rsa_function;
 	uint8_t		pem_header;
 	uint8_t		pem_footer;
@@ -87,9 +91,10 @@ enum	e_rsa_functions
 	RSAUTL
 };
 
-// Hardcoded values for the private key. Since the length of the key is always
-// 64 bits, we can hardcode some values to simplify the key generation process.
+// Hardcoded values for both keys. Since the key size is always 64 bits, some
+// values can be hardcoded to simplify the key generation process.
 // Maximum length expected for the private key is 89 bytes.
+// Maximum length expected for the public key is 38 bytes.
 // Structure according to the ASN.1 DER encoding.
 static const u_int8_t	g_private_key[] = {
 	0x30, 0x00, 0x02, 0x01, 0x00, 0x30, 0x0d, 0x06, 0x09, 0x2a, 0x86, 0x48,
@@ -98,7 +103,13 @@ static const u_int8_t	g_private_key[] = {
 	0x00, 0x00, 0x02, 0x03, 0x01, 0x00, 0x01, 0x02, 0x00, 0x00, 0x00, 0x00,
 	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,	
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 	0x00, 0x00, 0x00, 0x00, 0x00};
+	
+static const u_int8_t	g_public_key[] = {
+	0x30, 0x24, 0x30, 0x0d, 0x06, 0x09, 0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d,
+	0x01, 0x01, 0x01, 0x05, 0x00, 0x03, 0x13, 0x00, 0x30, 0x10, 0x02, 0x09,
+	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x03, 0x01,
+	0x00, 0x01};
 
 #endif

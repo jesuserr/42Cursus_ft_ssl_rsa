@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 17:11:34 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/03/02 13:52:52 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/03/02 19:21:51 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,7 @@ void		encode_key(t_rsa_args *args, uint8_t key_length);
 void		decode_key(t_rsa_args *args);
 
 /********************************** rsa_genrsa_format.c ***********************/
+uint8_t		format_rsa_public_key(t_rsa_args *args);
 void		modify_key_values_endianness(t_rsa_key *key);
 uint8_t		format_rsa_private_key(t_rsa_args *args);
 
@@ -156,7 +157,7 @@ bool		miller_rabin_test(uint64_t n, uint8_t k, bool verbose);
 void		genrsa(t_rsa_args *args);
 
 /********************************** rsa_rsa_parser.c **************************/
-void		parse_rsa_arguments(int argc, char **argv, t_rsa_args *args);
+void		parse_rsa_arguments(char **argv, t_rsa_args *args);
 
 /********************************** rsa_rsa.c *********************************/
 void		rsa(t_rsa_args *args);

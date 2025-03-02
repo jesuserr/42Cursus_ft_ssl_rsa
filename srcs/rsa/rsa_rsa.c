@@ -6,48 +6,46 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 09:53:34 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/03/02 15:17:57 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/03/02 19:43:05 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/ft_ssl.h"
 
-/*void	debug(t_rsa_args *args)
-{
-	ft_printf("Encoded key:\n");
-	ft_hex_dump(args->message, args->message_length, 32);
-	printf("message_length: %zu\n", args->message_length);
-	printf("Decoding key\n");
-	ft_printf("Encoded key without header and footer:\n");
-	ft_hex_dump(args->encoded_key, args->message_length, 32);
-	ft_printf("Decoded key:\n");
-	ft_hex_dump(args->decoded_key, args->decoded_key_length, 16);
-	ft_printf("Decoded key length: %u\n", args->decoded_key_length);
-	ft_hex_dump(&args->key, sizeof(t_rsa_key), 16);
-}*/
-
 void	output_encoded_key(t_rsa_args *args)
 {
-	uint8_t	private_key_len;
+	uint8_t	key_len;
 
-	private_key_len = format_rsa_private_key(args);
 	ft_printf("writing RSA key\n");
-	if (args->pem_header == RSA_PRIV_KEY_HEADER)
-		ft_putstr_fd("-----BEGIN RSA PRIVATE KEY-----\n", args->output_fd);
-	else if (args->pem_header == RSA_PUB_KEY_HEADER)
+	if (args->pub_out)
+	{
 		ft_putstr_fd("-----BEGIN RSA PUBLIC KEY-----\n", args->output_fd);
-	encode_key(args, private_key_len);
-	if (args->pem_header == RSA_PRIV_KEY_HEADER)
-		ft_putstr_fd("-----END RSA PRIVATE KEY-----\n", args->output_fd);
-	else if (args->pem_header == RSA_PUB_KEY_HEADER)
+		key_len = format_rsa_public_key(args);
+		encode_key(args, key_len);
 		ft_putstr_fd("-----END RSA PUBLIC KEY-----\n", args->output_fd);
+	}
+	else
+	{
+		ft_putstr_fd("-----BEGIN RSA PRIVATE KEY-----\n", args->output_fd);
+		key_len = format_rsa_private_key(args);
+		encode_key(args, key_len);
+		ft_putstr_fd("-----END RSA PRIVATE KEY-----\n", args->output_fd);
+	}
 }
 
-// Prints the key values in the desired format according to options -text and
-// -modulus.
+// Prints out the key values in the desired format according to options -text
+// and -modulus and also according to the type of key (private/public).
 void	print_key_values(t_rsa_args *args)
 {
-	if (args->text)
+	if (args->text && args->pub_in)
+	{
+		ft_printf("Public-Key: (64 bit)\n");
+		ft_printf("Modulus: ");
+		print_uint64_number(args->key.n);
+		ft_printf(" (0x%x%x)\n", args->key.n >> 32, (uint32_t)args->key.n);
+		ft_printf("Exponent: %u (0x%x)\n", args->key.e, args->key.e);
+	}
+	else if (args->text && !args->pub_in)
 	{
 		ft_printf("Private-Key: (64 bit, 2 primes)\n");
 		ft_printf("modulus: ");
@@ -77,8 +75,8 @@ void	print_key_values(t_rsa_args *args)
 // dmq1 and iqmp values, it is checked if these values are one bit longer than
 // expected (8->9, 4->5, 4->5 and 4->5 bytes, respectively). If so, the index is
 // incremented accordingly. Not checking if the length for these four values is
-// smaller than expected (they could be...). Assumptions made since the key
-// size is always 64 bits.
+// smaller than expected (they could be...). Assumptions can be made since the
+// key size is always 64 bits.
 void	extract_key_values(t_rsa_args *args)
 {
 	uint8_t	i;
@@ -116,11 +114,11 @@ void	verify_and_decode_key(t_rsa_args *args)
 	errno = EKEYREVOKED;
 	if (!ft_strncmp(args->message, "-----BEGIN RSA PRIVATE KEY-----\n", 32) \
 	&& !ft_strncmp(args->message + args->message_length - 31, \
-	"\n-----END RSA PRIVATE KEY-----\n", 31))
+	"\n-----END RSA PRIVATE KEY-----\n", 31) && !args->pub_in)
 		args->pem_header = RSA_PRIV_KEY_HEADER;
 	else if (!ft_strncmp(args->message, "-----BEGIN RSA PUBLIC KEY-----\n", 31) \
 	&& !ft_strncmp(args->message + args->message_length - 30, \
-	"\n-----END RSA PUBLIC KEY-----\n", 30))
+	"\n-----END RSA PUBLIC KEY-----\n", 30) && args->pub_in)
 		args->pem_header = RSA_PUB_KEY_HEADER;
 	else
 		print_rsa_strerror_and_exit("Error: Invalid key format", args);
