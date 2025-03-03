@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 17:11:34 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/03/02 19:21:51 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/03/03 13:12:02 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,12 +149,15 @@ uint64_t	modular_exponentiation(uint64_t base, uint64_t exp, uint64_t mod);
 uint64_t	modular_multiplicative_inverse(uint64_t e, uint64_t phi);
 uint64_t	greatest_common_divisor(uint64_t a, uint64_t b);
 
-/********************************** rsa_genrsa_utils.c ************************/
+/********************************** rsa_genrsa_parser.c ***********************/
 void		parse_genrsa_arguments(char **argv, t_rsa_args *args);
 
 /********************************** rsa_genrsa.c ******************************/
 bool		miller_rabin_test(uint64_t n, uint8_t k, bool verbose);
 void		genrsa(t_rsa_args *args);
+
+/********************************** rsa_rsa_check.c ***************************/
+void		check_private_key(t_rsa_args *args);
 
 /********************************** rsa_rsa_parser.c **************************/
 void		parse_rsa_arguments(char **argv, t_rsa_args *args);

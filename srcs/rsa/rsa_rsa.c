@@ -6,13 +6,13 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 09:53:34 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/03/02 19:43:05 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/03/03 14:02:15 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/ft_ssl.h"
 
-void	output_encoded_key(t_rsa_args *args)
+static void	output_encoded_key(t_rsa_args *args)
 {
 	uint8_t	key_len;
 
@@ -35,7 +35,7 @@ void	output_encoded_key(t_rsa_args *args)
 
 // Prints out the key values in the desired format according to options -text
 // and -modulus and also according to the type of key (private/public).
-void	print_key_values(t_rsa_args *args)
+static void	print_key_values(t_rsa_args *args)
 {
 	if (args->text && args->pub_in)
 	{
@@ -70,14 +70,15 @@ void	print_key_values(t_rsa_args *args)
 
 // Extracts the key values from the decoded key. First of all, looks for the
 // 0x0209 sequence that indicates the start of the modulus value and from then
-// on, extracts n, e, d, p, q, dmp1, dmq1 and iqmp values. It is assumed that
-// n, e, p and q are always 9, 3, 5 and 5 bytes long, respectively. For d, dmp1,
-// dmq1 and iqmp values, it is checked if these values are one bit longer than
-// expected (8->9, 4->5, 4->5 and 4->5 bytes, respectively). If so, the index is
+// on, extracts n, e, d, p, q, dmp1, dmq1 and iqmp values. For public keys only
+// extracts n and e values and then returns. It is assumed that n, e, p and q
+// are always 9, 3, 5 and 5 bytes long, respectively. For d, dmp1, dmq1 and iqmp
+// values, it is checked if these values are one bit longer than expected
+// (8->9, 4->5, 4->5 and 4->5 bytes, respectively). If so, the index is
 // incremented accordingly. Not checking if the length for these four values is
 // smaller than expected (they could be...). Assumptions can be made since the
 // key size is always 64 bits.
-void	extract_key_values(t_rsa_args *args)
+static void	extract_key_values(t_rsa_args *args)
 {
 	uint8_t	i;
 
@@ -85,8 +86,12 @@ void	extract_key_values(t_rsa_args *args)
 	while (i++ < args->decoded_key_length - 1)
 		if (args->decoded_key[i] == 0x02 && args->decoded_key[i + 1] == 0x09)
 			break ;
+	if (i > args->decoded_key_length - 1)
+		print_rsa_strerror_and_exit("RSA key not ok", args);
 	ft_memcpy(&args->key.n, args->decoded_key + (i += 3), sizeof(uint64_t));
 	ft_memcpy(&args->key.e, args->decoded_key + (i += 10), 3);
+	if (args->pub_in)
+		return ;
 	i = i + 5;
 	if (args->decoded_key[i - 1] > 8)
 		i++;
@@ -109,7 +114,7 @@ void	extract_key_values(t_rsa_args *args)
 
 // Verifies if the PEM header and footer are correct for either private or
 // public keys. If correct, removes PEM header and footer and decodes the key.
-void	verify_and_decode_key(t_rsa_args *args)
+static void	verify_and_decode_key(t_rsa_args *args)
 {
 	errno = EKEYREVOKED;
 	if (!ft_strncmp(args->message, "-----BEGIN RSA PRIVATE KEY-----\n", 32) \
@@ -122,6 +127,9 @@ void	verify_and_decode_key(t_rsa_args *args)
 		args->pem_header = RSA_PUB_KEY_HEADER;
 	else
 		print_rsa_strerror_and_exit("Error: Invalid key format", args);
+	if (args->check && args->pub_in)
+		print_rsa_strerror_and_exit("Error: Only private keys can be checked", \
+		args);
 	args->pem_footer = args->pem_header - 1;
 	args->encoded_key_length = args->message_length - args->pem_footer - \
 	args->pem_header;
@@ -140,6 +148,8 @@ void	rsa(t_rsa_args *args)
 	modify_key_values_endianness(&args->key);
 	if (args->text || args->modulus)
 		print_key_values(args);
+	if (args->check)
+		check_private_key(args);
 	if (!args->noout)
 		output_encoded_key(args);
 }

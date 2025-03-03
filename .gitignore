@@ -54,3 +54,8 @@ tests
 .vscode/settings.json
 kk1
 kk2
+private.key
+public.key
+test_check1.key
+test_check2.key
+test.key

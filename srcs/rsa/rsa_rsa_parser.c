@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 19:17:24 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/03/02 19:21:09 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/03/03 09:59:34 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,6 +134,9 @@ void	parse_rsa_arguments(char **argv, t_rsa_args *args)
 			args->pub_in = true;
 			args->pub_out = true;
 		}
+		else if (!ft_strncmp(argv[i], "-check", 6) && ft_strlen(argv[i]) == 6 \
+		&& !args->check)
+			args->check = true;
 		else
 			print_error_and_exit("Not recognized option");
 		i++;
