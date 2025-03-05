@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 09:53:34 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/03/03 14:02:15 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/03/05 12:44:16 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static void	print_key_values(t_rsa_args *args)
 // incremented accordingly. Not checking if the length for these four values is
 // smaller than expected (they could be...). Assumptions can be made since the
 // key size is always 64 bits.
-static void	extract_key_values(t_rsa_args *args)
+void	extract_key_values(t_rsa_args *args)
 {
 	uint8_t	i;
 

@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 11:59:02 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/03/05 11:56:45 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/03/05 12:08:12 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 // priority over pipe, so if both are provided, the pipe will be ignored.
 void	calls_to_rsa_functions(t_rsa_args *args)
 {
-	void	(*rsa_functions[])(t_rsa_args *) = {genrsa, rsa};
+	void	(*rsa_functions[])(t_rsa_args *) = {genrsa, rsa, rsautl};
 
 	if (args->rsa_function == GENRSA)
 		rsa_functions[args->rsa_function](args);
@@ -110,5 +110,6 @@ void	choose_rsa_function(char **argv, t_rsa_args *args)
 	{
 		args->rsa_function = RSAUTL;
 		parse_rsautl_arguments(argv, args);
+		calls_to_rsa_functions(args);
 	}
 }

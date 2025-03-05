@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 13:58:40 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/03/05 11:59:48 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/03/05 18:30:20 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,6 +174,13 @@ void	parse_rsautl_arguments(char **argv, t_rsa_args *args)
 		parse_pipe(args);
 	else
 		parse_file_content(args, args->input_file_name);
+	if (!args->input_pipe && !args->input_from_file)
+		read_interactive_mode(&args->input_pipe, &args->pipe_size);
+	if (args->input_file_size > 8 || args->pipe_size > 8)
+	{
+		errno = EMSGSIZE;
+		print_rsa_strerror_and_exit("Message exceeds key length 64 bits", args);
+	}
 	parse_key_content(args, args->inkey_file_name);
 	if (args->output_to_file)
 	{
@@ -182,9 +189,4 @@ void	parse_rsautl_arguments(char **argv, t_rsa_args *args)
 		if (args->output_fd == -1)
 			print_rsa_strerror_and_exit(args->output_file_name, args);
 	}
-	ft_hex_dump(args->input_pipe, args->pipe_size, 32);
-	ft_printf("\n");
-	ft_hex_dump(args->input_file, args->input_file_size, 32);
-	ft_printf("\n");
-	ft_hex_dump(args->inkey_content, args->inkey_length, 32);
 }

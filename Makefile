@@ -6,7 +6,7 @@
 #    By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/19 17:09:51 by jesuserr          #+#    #+#              #
-#    Updated: 2025/03/04 14:03:15 by jesuserr         ###   ########.fr        #
+#    Updated: 2025/03/05 12:04:28 by jesuserr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ SRCS = 	main.c \
 		rsa/rsa_utils.c rsa/rsa_genrsa.c rsa/rsa_genrsa_parser.c \
 		rsa/rsa_genrsa_maths.c rsa/rsa_genrsa_format.c rsa/rsa_rsa_parser.c \
 		rsa/rsa_rsa.c rsa/rsa_encode_utils.c rsa/rsa_rsa_check.c \
-		rsa/rsa_rsautl_parser.c
+		rsa/rsa_rsautl_parser.c rsa/rsa_rsautl.c
 PATH_SRCS = ./srcs/
 PATH_INCS = ./srcs/incs/
 PATH_OBJS = ./objs/
