@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 19:20:59 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/03/03 12:23:02 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/03/04 20:14:56 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,15 +48,18 @@ typedef struct s_rsa_args
 	char		*input_pipe;
 	char		*input_file;
 	char		*message;
+	char		*inkey_content;
 	char		encoded_key[PRIV_KEY_MAX_LENGTH * 2];
 	char		decoded_key[PRIV_KEY_MAX_LENGTH];
 	char		*input_file_name;
 	char		*output_file_name;
+	char		*inkey_file_name;
 	uint64_t	input_file_size;
 	uint64_t	pipe_size;
 	uint64_t	message_length;
 	uint8_t		encoded_key_length;
 	uint8_t		decoded_key_length;
+	uint64_t	inkey_length;
 	char		private_key[PRIV_KEY_MAX_LENGTH];
 	char		public_key[PUB_KEY_MAX_LENGTH];
 	int			output_fd;
@@ -69,6 +72,10 @@ typedef struct s_rsa_args
 	bool		pub_out;
 	bool		pub_in;
 	bool		check;
+	bool		inkey;
+	bool		encrypt;
+	bool		decrypt;
+	bool		hexdump;
 	uint8_t		rsa_function;
 	uint8_t		pem_header;
 	uint8_t		pem_footer;

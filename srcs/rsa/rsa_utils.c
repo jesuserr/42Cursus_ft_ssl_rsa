@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 11:59:02 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/03/02 19:22:14 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/03/05 11:56:45 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,9 @@ void	calls_to_rsa_functions(t_rsa_args *args)
 	if (args->output_to_file && args->output_fd != STDOUT_FILENO)
 		if (close(args->output_fd) < 0)
 			print_rsa_strerror_and_exit("close", args);
+	if (args->inkey_content)
+		if (munmap(args->inkey_content, args->inkey_length) < 0)
+			print_rsa_strerror_and_exit("munmap", args);
 }
 
 void	print_rsa_usage(void)
@@ -84,20 +87,13 @@ void	print_rsa_strerror_and_exit(char *msg, t_rsa_args *args)
 		free(args->input_pipe);
 	if (args->input_file)
 		munmap(args->input_file, args->input_file_size);
-	/*
-	if (!args->pass_provided && args->pass)
-		free(args->pass);
-	if (args->plaintext)
-		free(args->plaintext);
-	if (args->ciphertext)
-		free(args->ciphertext);
-	*/
+	if (args->inkey_content)
+		munmap(args->inkey_content, args->inkey_length);
 	exit(EXIT_FAILURE);
 }
 
-void	choose_rsa_function(int argc, char **argv, t_rsa_args *args)
+void	choose_rsa_function(char **argv, t_rsa_args *args)
 {
-	(void)argc;
 	if (!ft_strncmp(argv[1], "genrsa", 6) && ft_strlen(argv[1]) == 6)
 	{
 		args->rsa_function = GENRSA;
@@ -113,5 +109,6 @@ void	choose_rsa_function(int argc, char **argv, t_rsa_args *args)
 	else if (!ft_strncmp(argv[1], "rsautl", 6) && ft_strlen(argv[1]) == 6)
 	{
 		args->rsa_function = RSAUTL;
+		parse_rsautl_arguments(argv, args);
 	}
 }
