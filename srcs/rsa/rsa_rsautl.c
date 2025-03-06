@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 12:03:38 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/03/05 18:58:10 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/03/06 10:19:11 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,32 @@ static void	hexdump(t_rsa_args *args, uint64_t output)
 	close(stdout_backup);
 }
 
+static void	brute_force_cracker(t_rsa_args *args)
+{
+	uint64_t	i;
+
+	i = UINT32_MAX / 2;
+	ft_printf("Cracking public RSA key, please wait... ");
+	while (i < args->key.n)
+	{
+		if (args->key.n % i == 0)
+		{
+			args->key.p = i;
+			args->key.q = args->key.n / i;
+			ft_printf(" Done!!\nn: ");
+			print_uint64_number(args->key.n);
+			ft_printf("\np: %u\nq: %u\n", args->key.p, args->key.q);
+			ft_printf("Decrypted message: ");
+			args->key.phi = (uint64_t)(args->key.p - 1) * \
+			(uint64_t)(args->key.q - 1);
+			args->key.d = modular_multiplicative_inverse(args->key.e, \
+			args->key.phi);
+			break ;
+		}
+		i++;
+	}
+}
+
 // RSAUTL command main function.
 void	rsautl(t_rsa_args *args)
 {
@@ -62,10 +88,15 @@ void	rsautl(t_rsa_args *args)
 	modify_endianness_64_bits(&input);
 	if (args->encrypt)
 		output = modular_exponentiation(input, args->key.e, args->key.n);
-	else if (args->decrypt)
+	else if (args->decrypt && !args->crack)
 	{
 		if (args->pub_in)
 			print_rsa_strerror_and_exit("Error: Private key required", args);
+		output = modular_exponentiation(input, args->key.d, args->key.n);
+	}
+	else if (args->decrypt && args->crack)
+	{
+		brute_force_cracker(args);
 		output = modular_exponentiation(input, args->key.d, args->key.n);
 	}
 	modify_endianness_64_bits(&output);

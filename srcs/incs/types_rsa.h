@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 19:20:59 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/03/04 20:14:56 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/03/06 09:43:23 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ typedef struct s_rsa_args
 	bool		encrypt;
 	bool		decrypt;
 	bool		hexdump;
+	bool		crack;
 	uint8_t		rsa_function;
 	uint8_t		pem_header;
 	uint8_t		pem_footer;

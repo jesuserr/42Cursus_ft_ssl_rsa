@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 13:58:40 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/03/05 18:30:20 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/03/06 09:43:41 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,6 +158,9 @@ void	parse_rsautl_arguments(char **argv, t_rsa_args *args)
 		else if (!ft_strncmp(argv[i], "-hexdump", 8) && ft_strlen(argv[i]) == 8 \
 		&& !args->hexdump)
 			args->hexdump = true;
+		else if (!ft_strncmp(argv[i], "-crack", 6) && ft_strlen(argv[i]) == 6 \
+		&& !args->crack)
+			args->crack = true;
 		else
 			print_error_and_exit("Not recognized option");
 		i++;
