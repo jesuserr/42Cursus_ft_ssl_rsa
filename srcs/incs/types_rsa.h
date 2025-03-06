@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 19:20:59 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/03/06 15:28:47 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/03/06 19:28:59 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@
 # define SECOND_RND_NBR			2U			// Second random number generated
 # define RSA_PUB_KEY_HEADER		31U			// Header length RSA public key
 # define RSA_PRIV_KEY_HEADER	32U			// Header length RSA private key
+# define CRACK_START_TIMER		0U			// Start timer for crack function
+# define CRACK_STOP_TIMER		1U			// Stop timer for crack function
 
 /*
 ** -.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-.-'-

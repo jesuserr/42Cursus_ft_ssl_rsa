@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 12:03:38 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/03/06 15:35:10 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/03/06 20:18:44 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ static bool	pollard_rho_algorithm(t_rsa_args *args)
 	args->key.q = args->key.n / args->key.p;
 	ft_printf(" Done!!\nn: ");
 	print_uint64_number(args->key.n);
-	ft_printf("\np: %u\nq: %u\nDecrypted message: ", args->key.p, args->key.q);
+	ft_printf("\np: %u\nq: %u\n", args->key.p, args->key.q);
 	args->key.phi = (uint64_t)(args->key.p - 1) * (uint64_t)(args->key.q - 1);
 	args->key.d = modular_multiplicative_inverse(args->key.e, args->key.phi);
 	return (true);
@@ -95,7 +95,6 @@ static void	brute_force_cracker(t_rsa_args *args)
 			ft_printf(" Done!!\nn: ");
 			print_uint64_number(args->key.n);
 			ft_printf("\np: %u\nq: %u\n", args->key.p, args->key.q);
-			ft_printf("Decrypted message: ");
 			args->key.phi = (uint64_t)(args->key.p - 1) * \
 			(uint64_t)(args->key.q - 1);
 			args->key.d = modular_multiplicative_inverse(args->key.e, \
@@ -128,8 +127,11 @@ void	rsautl(t_rsa_args *args)
 	}
 	else if (args->decrypt && args->crack)
 	{
+		timer(CRACK_START_TIMER);
 		if (!pollard_rho_algorithm(args))
 			brute_force_cracker(args);
+		timer(CRACK_STOP_TIMER);
+		ft_printf("Decrypted message: ");
 		output = modular_exponentiation(input, args->key.d, args->key.n);
 	}
 	modify_endianness_64_bits(&output);

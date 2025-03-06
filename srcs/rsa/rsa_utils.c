@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 11:59:02 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/03/06 09:56:50 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/03/06 19:48:52 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,5 +112,23 @@ void	choose_rsa_function(char **argv, t_rsa_args *args)
 		args->rsa_function = RSAUTL;
 		parse_rsautl_arguments(argv, args);
 		calls_to_rsa_functions(args);
+	}
+}
+
+void	timer(uint8_t timer_action)
+{
+	static struct timeval	start;
+	static struct timeval	end;
+	uint64_t				secs_used;
+	uint64_t				micros_used;
+
+	if (timer_action == CRACK_START_TIMER)
+		gettimeofday(&start, NULL);
+	else
+	{
+		gettimeofday(&end, NULL);
+		secs_used = end.tv_sec - start.tv_sec;
+		micros_used = ((secs_used * 1000000) + end.tv_usec) - (start.tv_usec);
+		ft_printf("Key has been broken in %u ms\n", micros_used / 1000);
 	}
 }

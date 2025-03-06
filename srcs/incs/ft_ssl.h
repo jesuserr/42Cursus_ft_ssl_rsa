@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/19 17:11:34 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/03/05 12:44:30 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/03/06 20:26:13 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@
 # include <sys/stat.h>							// for fstat
 # include <sys/mman.h>							// for mmap/munmap
 # include <bsd/readpassphrase.h>				// for readpassphrase
+# include <sys/time.h>							// for gettimeofday, crack timer
 # include <bits/getopt_core.h>	// Delete, just to fix intellisense vscode error
 
 /*
@@ -176,5 +177,6 @@ void		rsautl(t_rsa_args *args);
 void		print_rsa_usage(void);
 void		print_rsa_strerror_and_exit(char *msg, t_rsa_args *args);
 void		choose_rsa_function(char **argv, t_rsa_args *args);
+void		timer(uint8_t timer_action);
 
 #endif
