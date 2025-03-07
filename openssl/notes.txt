@@ -1,0 +1,12 @@
+Version of openssl that admits generation of 64 bits RSA keys
+
+Installation:
+
+tar -xzf openssl-0.9.8zh.tar.gz
+cd openssl-0.9.8zh
+./config
+make
+./apps/openssl version
+
+if there is problems with shared libraries:
+export LD_LIBRARY_PATH=/home/jesuserr/My_programs/Outer_core/42Cursus_ft_ssl_rsa/openssl/openssl-0.9.8zh
