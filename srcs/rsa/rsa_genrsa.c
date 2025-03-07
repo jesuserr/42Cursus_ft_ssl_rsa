@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 12:15:02 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/03/02 21:32:02 by jesuserr         ###   ########.fr       */
+/*   Updated: 2025/03/07 13:34:42 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ static void	key_calculation(t_rsa_args *args)
 		while (!miller_rabin_test(args->key.q, MR_ITERATIONS, args->verbose))
 			args->key.q = generate_random_number(args, SECOND_RND_NBR);
 		args->key.n = (uint64_t)args->key.p * (uint64_t)args->key.q;
-		if (args->key.n >= 0x8000000000000000)
+		if (args->key.n >= 0x8000000000000000 && args->key.p != args->key.q)
 			break ;
 		if (args->verbose)
 			ft_printf("x");
