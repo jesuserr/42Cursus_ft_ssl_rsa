@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 11:59:02 by jesuserr          #+#    #+#             */
-/*   Updated: 2026/02/27 13:22:23 by jesuserr         ###   ########.fr       */
+/*   Updated: 2026/02/27 15:43:47 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,23 +49,29 @@ void	print_rsa_usage(void)
 {
 	ft_printf("Usage\n"
 		"  ./ft_ssl <command> [flags] [file]\n\n"
-		"RSA options:\n  command         genrsa, rsa, rsautl\n"
-		"  -h              print help and exit\n"
-		"  -in <file>      input file\n"
-		"  -out <file>     output file\n"
-		"  -text           print the key in plain text\n"
-		"  -noout          do not output encoded version of key\n"
-		"  -modulus        print value of key modulus\n"
-		"  -check          verify key consistency\n"
-		"  -pubin          read public key from input file\n"
-		"  -pubout         print public key\n"
-		"  -inkey <file>   input key (RSA private key by default)\n"
-		"  -encrypt        encrypt input data with public key\n"
-		"  -decrypt        decrypt input data with private key\n"
-		"  -hexdump        print the key in hexadecimal\n"
-		"  -verbose        print details during key generation\n"
-		"  -test <n> <p>   test if n is prime at p probability\n"
-		"  -crack          crack RSA public key\n");
+		"RSA options:\n  command           genrsa, rsa, rsautl\n"
+		"  -h                print help and exit\n"
+		"  genrsa flags:\n"
+		"    -out <file>     output file\n"
+		"    -verbose        print details during key generation\n"
+		"    -test <n> <p>   test if n is prime at p probability\n"
+		"  rsa flags:\n"
+		"    -in <file>      input file\n"
+		"    -out <file>     output file\n"
+		"    -text           print the key in plain text\n"
+		"    -noout          do not output encoded version of key\n"
+		"    -modulus        print value of key modulus\n"
+		"    -check          verify key consistency\n"
+		"    -pubin          read public key from input file\n"
+		"    -pubout         print public key\n"
+		"  rsautl flags:\n"
+		"    -in <file>      input file\n"
+		"    -out <file>     output file\n"
+		"    -inkey <file>   input key (RSA private key by default)\n"
+		"    -encrypt        encrypt input data with public key\n"
+		"    -decrypt        decrypt input data with private key\n"
+		"    -hexdump        print the key in hexadecimal\n"
+		"    -crack          crack RSA public key\n");
 	exit(EXIT_SUCCESS);
 }
 
