@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 12:03:38 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/03/06 20:18:44 by jesuserr         ###   ########.fr       */
+/*   Updated: 2026/02/26 17:29:02 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,11 +106,15 @@ static void	brute_force_cracker(t_rsa_args *args)
 }
 
 // RSAUTL command main function.
+// In order to apply compiler flag '-O3' it is required to assign the return
+// value of write() to a variable, even if it is not used, as in this case.
 void	rsautl(t_rsa_args *args)
 {
 	uint64_t	input;
 	uint64_t	output;
+	ssize_t		bytes;
 
+	(void)bytes;
 	input = 0;
 	verify_and_decode_key(args);
 	extract_key_values(args);
@@ -138,5 +142,5 @@ void	rsautl(t_rsa_args *args)
 	if (args->hexdump)
 		hexdump(args, output);
 	else
-		write(args->output_fd, &output, sizeof(uint64_t));
+		bytes = write(args->output_fd, &output, sizeof(uint64_t));
 }

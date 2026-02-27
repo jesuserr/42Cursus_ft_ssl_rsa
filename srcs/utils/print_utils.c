@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 22:21:30 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/03/06 09:57:08 by jesuserr         ###   ########.fr       */
+/*   Updated: 2026/02/27 13:22:28 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,13 +84,8 @@ static void	print_total_usage_continued(void)
 	ft_printf(
 		"RSA options:\n  command         genrsa, rsa, rsautl\n"
 		"  -h              print help and exit\n"
-		"  -inform PEM     input format is PEM (default)\n"
-		"  -outform PEM    output format is PEM (default)\n"
 		"  -in <file>      input file\n"
-		"  -passin arg     input file password source\n"
 		"  -out <file>     output file\n"
-		"  -passout arg    output file password source\n"
-		"  -des            encrypt the output with DES in CBC mode\n"
 		"  -text           print the key in plain text\n"
 		"  -noout          do not output encoded version of key\n"
 		"  -modulus        print value of key modulus\n"

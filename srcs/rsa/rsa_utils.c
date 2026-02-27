@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 11:59:02 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/03/06 19:48:52 by jesuserr         ###   ########.fr       */
+/*   Updated: 2026/02/27 13:22:23 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,8 @@ void	print_rsa_usage(void)
 		"  ./ft_ssl <command> [flags] [file]\n\n"
 		"RSA options:\n  command         genrsa, rsa, rsautl\n"
 		"  -h              print help and exit\n"
-		"  -inform PEM     input format is PEM (default)\n"
-		"  -outform PEM    output format is PEM (default)\n"
 		"  -in <file>      input file\n"
-		"  -passin arg     input file password source\n"
 		"  -out <file>     output file\n"
-		"  -passout arg    output file password source\n"
-		"  -des            encrypt the output with DES in CBC mode\n"
 		"  -text           print the key in plain text\n"
 		"  -noout          do not output encoded version of key\n"
 		"  -modulus        print value of key modulus\n"

@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 11:18:14 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/02/10 12:57:27 by jesuserr         ###   ########.fr       */
+/*   Updated: 2026/02/26 16:01:28 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,21 @@ static void	des_ecb_encrypt(t_encrypt_args *args)
 	free(args->ciphertext);
 }
 
+// Validate PKCS#7 padding byte before stripping it. A wrong key produces
+// garbage output whose last byte may exceed BLOCK_LENGTH, causing 
+// args->message_length underflow in the subtraction below and an out-of-bounds
+// read (segfault). Known weakness: only the last byte is checked; if garbage
+// falls in [1, 8] the check passes and garbled plaintext is silently printed.
+static void	validate_pkcs7_padding(t_encrypt_args *args)
+{
+	if ((uint8_t)args->message[args->message_length - 1] == 0 || \
+	(uint8_t)args->message[args->message_length - 1] > BLOCK_LENGTH)
+	{
+		errno = EINVAL;
+		print_encrypt_strerror_and_exit("bad decrypt", args);
+	}
+}
+
 // ECB decryption main function.
 // Before calling this function, the message has been decoded from base64 (if
 // it was encoded) and the salt been extracted from the message (if it was
@@ -80,6 +95,7 @@ static void	des_ecb_decrypt(t_encrypt_args *args)
 		ft_memcpy(args->message + i, args->output_block, BLOCK_LENGTH);
 		i += BLOCK_LENGTH;
 	}
+	validate_pkcs7_padding(args);
 	args->message_length -= args->message[args->message_length - 1];
 	i = 0;
 	while (i < args->message_length)

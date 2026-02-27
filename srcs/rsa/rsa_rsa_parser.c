@@ -6,7 +6,7 @@
 /*   By: jesuserr <jesuserr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 19:17:24 by jesuserr          #+#    #+#             */
-/*   Updated: 2025/03/03 09:59:34 by jesuserr         ###   ########.fr       */
+/*   Updated: 2026/02/27 13:18:46 by jesuserr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,12 +111,6 @@ void	parse_rsa_arguments(char **argv, t_rsa_args *args)
 			args->input_file_name = argv[i + 1];
 			i++;
 		}
-		else if (!ft_strncmp(argv[i], "-inform", 7) && ft_strlen(argv[i]) == 7 \
-		&& !ft_strncmp(argv[i + 1], "PEM", 3) && ft_strlen(argv[i + 1]) == 3)
-			i++;
-		else if (!ft_strncmp(argv[i], "-outform", 8) && ft_strlen(argv[i]) == 8 \
-		&& !ft_strncmp(argv[i + 1], "PEM", 3) && ft_strlen(argv[i + 1]) == 3)
-			i++;
 		else if (!ft_strncmp(argv[i], "-text", 5) && ft_strlen(argv[i]) == 5 && \
 		!args->text)
 			args->text = true;
